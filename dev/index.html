@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@xaro/tabs</title>
+  <link rel="stylesheet" href="./Tabs.css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="tabs">
+      <div class="tabs__nav">
+        <div class="tabs__nav-item tabs__nav-item--active" data-tabs-target="0">0</div>
+        <div class="tabs__nav-item" data-tabs-target="1">1</div>
+        <div class="tabs__nav-item" data-tabs-target="2">2</div>
+      </div>
+      <div class="tabs__items">
+        <div class="tabs__item tabs__item--active" data-tabs-id="0">#0 Content</div>
+        <div class="tabs__item" data-tabs-id="1">#1 Content</div>
+        <div class="tabs__item" data-tabs-id="2">#2 Content</div>
+      </div>
+    </div>
+    <div class="tabs">
+      <div class="tabs__nav">
+        <div class="tabs__nav-item">0</div>
+        <div class="tabs__nav-item">1</div>
+        <div class="tabs__nav-item">2</div>
+      </div>
+      <div class="tabs__items">
+        <div class="tabs__item">#0 Content</div>
+        <div class="tabs__item">#1 Content</div>
+        <div class="tabs__item">#2 Content</div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="./Tabs.dev.js"></script>
+</body>
+</html>

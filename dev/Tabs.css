@@ -1,0 +1,37 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 100%;
+  width: 600px;
+}
+
+.tabs__nav {
+  display: flex;
+  margin-bottom: 15px;
+}
+.tabs__nav-item {
+  padding: 5px 10px;
+  margin-right: 5px;
+  border-radius: 4px;
+  background-color: #d2ff8e;
+}
+.tabs__nav-item:last-child {
+  margin-right: 0;
+}
+.tabs__nav-item--active {
+  border: solid 1px black;
+}
+.tabs__item {
+  display: none;
+  padding: 5px;
+  border: solid 1px black;
+}
+.tabs__item--active {
+  display: block;
+}
+
+/*# sourceMappingURL=Tabs.css.map*/
