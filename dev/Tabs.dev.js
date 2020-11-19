@@ -64,6 +64,195 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/@xaro/css-class-animations/src/CSSClassAnimations.ts":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@xaro/css-class-animations/src/CSSClassAnimations.ts ***!
+  \***************************************************************************/
+/*! namespace exports */
+/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => /* binding */ CSSClassAnimations
+/* harmony export */ });
+/* harmony import */ var _xaro_event_emitter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @xaro/event-emitter */ "./node_modules/@xaro/event-emitter/src/index.ts");
+/* harmony import */ var _variables__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./variables */ "./node_modules/@xaro/css-class-animations/src/variables.ts");
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers */ "./node_modules/@xaro/css-class-animations/src/helpers.ts");
+;
+
+
+class CSSClassAnimations {
+    constructor(config) {
+        this.els = [];
+        this.emitter = new _xaro_event_emitter__WEBPACK_IMPORTED_MODULE_0__.default(config.on);
+        if (Array.isArray(config.el)) {
+            for (const val of config.el) {
+                (0,_helpers__WEBPACK_IMPORTED_MODULE_2__.addTo)(this.els, val);
+            }
+        }
+        else {
+            (0,_helpers__WEBPACK_IMPORTED_MODULE_2__.addTo)(this.els, config.el);
+        }
+        if (config.allow) {
+            // this.allow = config.allow.filter(value => events.includes(value));
+            this.allow = (Array.isArray(config.allow) ? config.allow : [config.allow]).filter(value => _variables__WEBPACK_IMPORTED_MODULE_1__.events.includes(value));
+        }
+        else if (config.disallow) {
+            // this.allow = events.filter(value => !config.disallow!.includes(value as T_DOMEventsKeys));
+            this.allow = (Array.isArray(config.disallow) ? config.disallow : [config.disallow]).filter(value => _variables__WEBPACK_IMPORTED_MODULE_1__.events.includes(value));
+        }
+        else {
+            this.allow = _variables__WEBPACK_IMPORTED_MODULE_1__.events;
+        }
+        for (const key in _variables__WEBPACK_IMPORTED_MODULE_1__.eventsListeners) {
+            this[_variables__WEBPACK_IMPORTED_MODULE_1__.eventsListeners[key]] = this[_variables__WEBPACK_IMPORTED_MODULE_1__.eventsListeners[key]].bind(this);
+        }
+        for (const el of this.els) {
+            for (const event of this.allow) {
+                el.addEventListener(event, this[_variables__WEBPACK_IMPORTED_MODULE_1__.eventsListeners[event]]);
+            }
+        }
+    }
+    __mutationStartListener(event) {
+        this.emitter.emit('start', this, event);
+    }
+    __mutationCancelListener(event) {
+        this.emitter.emit('cancel', this, event);
+    }
+    __mutationEndListener(event) {
+        this.emitter.emit('end', this, event);
+    }
+    __mutationIterationListener(event) {
+        this.emitter.emit('iteration', this, event);
+    }
+    __mutationRunListener(event) {
+        this.emitter.emit('run', this, event);
+    }
+    addEvent(domEventKey) {
+        if (!this.allow.includes(domEventKey)) {
+            return;
+        }
+        for (const el of this.els) {
+            el.addEventListener(domEventKey, this[_variables__WEBPACK_IMPORTED_MODULE_1__.eventsListeners[domEventKey]]);
+        }
+    }
+    removeEvent(domEventKey) {
+        if (!this.allow.includes(domEventKey)) {
+            return;
+        }
+        for (const el of this.els) {
+            el.removeEventListener(domEventKey, this[_variables__WEBPACK_IMPORTED_MODULE_1__.eventsListeners[domEventKey]]);
+        }
+    }
+    addClass(...classes) {
+        for (const el of this.els) {
+            el.classList.add(...classes);
+        }
+        return this.els;
+    }
+    removeClass(...classes) {
+        for (const el of this.els) {
+            el.classList.remove(...classes);
+        }
+        return this.els;
+    }
+    css(obj) {
+        for (const el of this.els) {
+            for (const key in obj) {
+                el.style[key] = obj[key];
+            }
+        }
+        return this.els;
+    }
+    on(eventKey, cb) {
+        this.emitter.subscribe(eventKey, cb);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@xaro/css-class-animations/src/helpers.ts":
+/*!****************************************************************!*\
+  !*** ./node_modules/@xaro/css-class-animations/src/helpers.ts ***!
+  \****************************************************************/
+/*! namespace exports */
+/*! export addTo [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "addTo": () => /* binding */ addTo
+/* harmony export */ });
+function addTo(origin, value) {
+    if (typeof value === 'string') {
+        origin.push(...document.querySelectorAll(value));
+    }
+    else if (value instanceof Element) {
+        origin.push(value);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@xaro/css-class-animations/src/index.ts":
+/*!**************************************************************!*\
+  !*** ./node_modules/@xaro/css-class-animations/src/index.ts ***!
+  \**************************************************************/
+/*! namespace exports */
+/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__, __webpack_exports__, __webpack_require__.r, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var _CSSClassAnimations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CSSClassAnimations */ "./node_modules/@xaro/css-class-animations/src/CSSClassAnimations.ts");
+;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_CSSClassAnimations__WEBPACK_IMPORTED_MODULE_0__.default);
+
+
+/***/ }),
+
+/***/ "./node_modules/@xaro/css-class-animations/src/variables.ts":
+/*!******************************************************************!*\
+  !*** ./node_modules/@xaro/css-class-animations/src/variables.ts ***!
+  \******************************************************************/
+/*! namespace exports */
+/*! export events [provided] [no usage info] [missing usage info prevents renaming] */
+/*! export eventsListeners [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "eventsListeners": () => /* binding */ eventsListeners,
+/* harmony export */   "events": () => /* binding */ events
+/* harmony export */ });
+const eventsListeners = {
+    animationstart: '__mutationStartListener',
+    animationcancel: '__mutationCancelListener',
+    animationend: '__mutationEndListener',
+    animationiteration: '__mutationIterationListener',
+    transitionstart: '__mutationStartListener',
+    transitioncancel: '__mutationCancelListener',
+    transitionend: '__mutationEndListener',
+    transitionrun: '__mutationRunListener'
+};
+const events = Object.keys(eventsListeners);
+
+
+/***/ }),
+
 /***/ "./node_modules/@xaro/event-emitter/src/EventEmitter.ts":
 /*!**************************************************************!*\
   !*** ./node_modules/@xaro/event-emitter/src/EventEmitter.ts ***!
@@ -116,9 +305,11 @@ class EventEmitter {
      * Unsubscribes all callback functions from the event and removes the event
      * key.
      */
-    unsubscribe(key) {
-        if (this.events[key]) {
-            delete this.events[key];
+    unsubscribe(...keys) {
+        for (const key of keys) {
+            if (this.events[key]) {
+                delete this.events[key];
+            }
         }
     }
     /**
@@ -242,6 +433,44 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/Nav.ts":
+/*!********************!*\
+  !*** ./src/Nav.ts ***!
+  \********************/
+/*! namespace exports */
+/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => /* binding */ Nav
+/* harmony export */ });
+class Nav {
+    constructor(config) {
+        this.tabs = config.tabs;
+        this.tab = config.tab;
+        this.config = {
+            el: config.el
+        };
+        this.clickListener = this.clickListener.bind(this);
+        this.config.el.addEventListener('click', this.clickListener);
+    }
+    clickListener(event) {
+        this.tabs.changeTab(this.tab.config.idx);
+    }
+    disactivate() {
+        this.config.el.classList.remove(this.tabs.config.classes.activeNav);
+    }
+    activate() {
+        this.config.el.classList.add(this.tabs.config.classes.activeNav);
+    }
+}
+
+
+/***/ }),
+
 /***/ "./src/Tab.ts":
 /*!********************!*\
   !*** ./src/Tab.ts ***!
@@ -257,27 +486,90 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => /* binding */ Tab
 /* harmony export */ });
 /* harmony import */ var _xaro_event_emitter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @xaro/event-emitter */ "./node_modules/@xaro/event-emitter/src/index.ts");
+/* harmony import */ var _xaro_css_class_animations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @xaro/css-class-animations */ "./node_modules/@xaro/css-class-animations/src/index.ts");
 ;
+
 class Tab {
     constructor(config) {
+        this.pending = false;
         this.config = config;
-        this.emitter = new _xaro_event_emitter__WEBPACK_IMPORTED_MODULE_0__.default(this.config.on);
-        if (this.config.current === undefined) {
-            this.config.current = false;
+        this.emitter = new _xaro_event_emitter__WEBPACK_IMPORTED_MODULE_0__.default({ ...this.config.on });
+        if (this.config.tabs.config.mutation !== false) {
+            this.animation = new _xaro_css_class_animations__WEBPACK_IMPORTED_MODULE_1__.default({
+                el: this.config.el,
+                allow: [this.config.tabs.config.mutation + 'end'],
+                on: {
+                    end: [
+                        this.__mutationEndCallback.bind(this)
+                    ]
+                }
+            });
         }
-        // if (config.)
     }
-    hide() {
-        this.emitter.emit('beforeHide', this);
-        this.config.current = false;
-        this.config.el.classList.remove('.tabs__item--active');
-        this.emitter.emit('afterHide', this);
+    __mutationEndCallback(event) {
+        this.pending = false;
+        this.emitter.emit('internalMutationEnd', event);
+        this.config.tabs.currentPendingTab = undefined;
+        this.emitter.emit('mutationEnd', event);
     }
-    show() {
-        this.emitter.emit('beforeShow', this);
-        this.config.current = true;
-        this.config.el.classList.add('.tabs__item--active');
-        this.emitter.emit('afterShow', this);
+    hide(config) {
+        const classes = this.config.tabs.config.classes;
+        const mutation = this.config.tabs.config.mutation;
+        this.pending = true;
+        this.config.tabs.currentPendingTab = config && config.animated !== false ? this : undefined;
+        if (mutation === false) {
+            this.config.el.classList.remove(classes.activeTab);
+        }
+        else {
+            if (config && config.animated === false) {
+                this.config.tabs.currentPendingTab = undefined;
+                this.animation.addClass(classes[mutation].cancel);
+            }
+            this.animation.removeClass(classes[mutation].hide, classes[mutation].show);
+            if (config && config.after) {
+                this.emitter.once('internalMutationEnd', () => {
+                    this.animation.removeClass(classes.activeTab);
+                    this.config.visible = false;
+                });
+                this.emitter.once('mutationEnd', () => {
+                    config.after();
+                });
+                this.animation.addClass(classes[mutation].hide);
+            }
+            else {
+                this.animation.removeClass(classes.activeTab);
+            }
+            if (config && config.animated === false) {
+                this.animation.removeClass(classes[mutation].cancel);
+            }
+        }
+    }
+    show(config) {
+        const classes = this.config.tabs.config.classes;
+        const mutation = this.config.tabs.config.mutation;
+        this.pending = true;
+        this.config.tabs.currentPendingTab = this;
+        if (mutation === false) {
+            this.config.el.classList.add(classes.activeTab);
+        }
+        else {
+            if (config && config.animated === false) {
+                this.animation.addClass(classes[mutation].cancel);
+            }
+            this.animation.removeClass(classes[mutation].hide, classes[mutation].show);
+            if (config) {
+                if (config.after) {
+                    this.emitter.once('mutationEnd', () => {
+                        config.after();
+                    });
+                }
+            }
+            this.animation.addClass(classes.activeTab, classes[mutation].show);
+            this.config.visible = true;
+            if (config && config.animated === false) {
+                this.animation.removeClass(classes[mutation].show, classes[mutation].cancel);
+            }
+        }
     }
 }
 
@@ -302,63 +594,108 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _xaro_extend__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @xaro/extend */ "./node_modules/@xaro/extend/index.js");
 /* harmony import */ var _Tab__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tab */ "./src/Tab.ts");
 /* harmony import */ var _variables__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./variables */ "./src/variables.ts");
+/* harmony import */ var _Nav__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Nav */ "./src/Nav.ts");
 ;
+
 
 
 
 class Tabs {
     constructor(config) {
         this.items = [];
+        this.currentPendingTab = undefined;
         this.config = (0,_xaro_extend__WEBPACK_IMPORTED_MODULE_1__.default)({}, _variables__WEBPACK_IMPORTED_MODULE_3__.defaults, config);
-        this.emitter = new _xaro_event_emitter__WEBPACK_IMPORTED_MODULE_0__.default(this.config.on);
-        let current;
-        // create items
-        if (config.items) {
-            let index = 0;
-            for (const configTab of config.items) {
-                const tab = new _Tab__WEBPACK_IMPORTED_MODULE_2__.default({
-                    tabs: this,
-                    el: configTab.el || this.config.el.querySelector('.' + this.config.classes.tab),
-                    on: configTab.on,
-                    current: configTab.current === undefined ? false : configTab.current,
-                    index,
-                });
-                if (configTab.current) {
-                    current = index;
+        this.emitter = new _xaro_event_emitter__WEBPACK_IMPORTED_MODULE_0__.default({ ...this.config.on });
+        this.config.mutation = this.config.mutation === undefined ? 'animation' : this.config.mutation;
+        this.config.el.classList.add(this.config.classes.wrapper[new String(this.config.mutation).toString()]);
+        const navEls = this.config.el.querySelectorAll('.' + this.config.classes.nav);
+        const tabEls = this.config.el.querySelectorAll('.' + this.config.classes.tab);
+        for (let idx = 0; idx < tabEls.length; idx++) {
+            if (this.config.current === undefined) {
+                if (tabEls[idx].classList.contains(this.config.classes.activeTab) || navEls[idx].classList.contains(this.config.classes.activeNav)) {
+                    this.config.current = idx;
                 }
-                this.items.push(tab);
             }
+            const tab = new _Tab__WEBPACK_IMPORTED_MODULE_2__.default({
+                el: tabEls[idx],
+                tabs: this,
+                idx
+            });
+            const nav = new _Nav__WEBPACK_IMPORTED_MODULE_4__.default({
+                tabs: this,
+                el: navEls[idx],
+                tab
+            });
+            tab.config.nav = nav;
+            this.items.push(tab);
         }
-        else {
-            const els = this.config.el.querySelectorAll('.' + this.config.classes.tab);
-            for (let i = 0; i < els.length; i++) {
-                const tab = new _Tab__WEBPACK_IMPORTED_MODULE_2__.default({
-                    el: els[i],
-                    tabs: this,
-                    index: i
-                });
-                if (els[i].classList.contains(this.config.classes.activeTab)) {
-                    current = i;
-                }
-                this.items.push(tab);
-            }
+        if (!this.config.current) {
+            this.config.current = 0;
         }
-        // set current index
-        this.config.current = current || 0;
-        // // create navs
-        // if (config.nav) {
-        //   if (config.nav )
-        // }
+        this.fixClasses();
     }
-    activate(index) {
-        if (index >= this.items.length) {
+    fixClasses() {
+        for (const tab of this.items) {
+            if (tab.config.idx === this.config.current) {
+                tab.show({ animated: false });
+                tab.config.nav?.config.el.classList.add(this.config.classes.activeNav);
+            }
+            else {
+                tab.hide({ animated: false });
+                tab.config.nav?.config.el.classList.remove(this.config.classes.activeNav);
+            }
+        }
+    }
+    changeTab(idx) {
+        if (!this.items[idx]) {
             return;
         }
-        this.emitter.emit('beforeActivate', this, this.config.current, index);
-        this.items[this.config.current].hide();
-        this.items[index].show();
-        this.config.current = index;
-        this.emitter.emit('afterActivate', this, this.config.current, index);
+        const prevIdx = this.config.current;
+        const nextIdx = idx;
+        if (prevIdx === nextIdx) {
+            return;
+        }
+        const prevTab = this.items[prevIdx];
+        const nextTab = this.items[nextIdx];
+        this.emitter.emit('beforeChange', this, prevIdx, nextIdx);
+        if (this.config.mutation === false) {
+            prevTab.hide();
+            nextTab.show();
+        }
+        else {
+            if (this.currentPendingTab) {
+                const pendingTab = this.currentPendingTab;
+                pendingTab.emitter.unsubscribe('mutationEnd');
+                pendingTab.emitter.once('mutationEnd', () => {
+                    if (pendingTab.config.visible) {
+                        pendingTab.hide({
+                            after: () => {
+                                nextTab.show({
+                                    after: () => this.emitter.emit('afterChange', this, prevIdx, nextIdx)
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        nextTab.show({
+                            after: () => this.emitter.emit('afterChange', this, prevIdx, nextIdx)
+                        });
+                    }
+                });
+            }
+            else {
+                prevTab.hide({
+                    after: () => {
+                        nextTab.show({
+                            after: () => this.emitter.emit('afterChange', this, prevIdx, nextIdx)
+                        });
+                    }
+                });
+            }
+        }
+        prevTab.config.nav?.disactivate();
+        nextTab.config.nav?.activate();
+        this.config.current = nextIdx;
     }
 }
 
@@ -380,14 +717,20 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 window.tabs = new ___WEBPACK_IMPORTED_MODULE_1__.default({
-    el: document.querySelector('.tabs'),
+    el: document.querySelector('.tabs-1'),
+    mutation: 'animation',
+    // mutation: false,
     on: {
         init: (tabs) => {
+            console.log('[init]');
+        },
+        beforeChange: (tabs, prevIdx, nextIdx) => {
+            console.log('[beforeChange]', prevIdx, nextIdx);
+        },
+        afterChange: (tabs, prevIdx, nextIdx) => {
+            console.log('[afterChange]', prevIdx, nextIdx);
         }
-    },
-    items: [
-        {}
-    ],
+    }
 });
 
 
@@ -433,14 +776,28 @@ const defaults = {
     classes: {
         navs: 'tabs__navs',
         nav: 'tabs__nav',
-        tabs: 'tabs__items',
-        tab: 'tabs__item',
-        activeTab: 'tabs__item--active'
+        tabs: 'tabs__tabs',
+        tab: 'tabs__tab',
+        activeTab: 'tabs__tab--active',
+        activeNav: 'tabs__nav--active',
+        animation: {
+            cancel: 'tabs__tab--animation-cancel',
+            hide: 'tabs__tab--animation-hide',
+            show: 'tabs__tab--animation-show',
+        },
+        transition: {
+            cancel: 'tabs__tab--transition-cancel',
+            hide: 'tabs__tab--transition-hide',
+            show: 'tabs__tab--transition-show',
+        },
+        wrapper: {
+            animation: 'tabs--animation',
+            transition: 'tabs--transition',
+            false: 'tabs--without-animation'
+        }
     },
-    attr: {
-        target: 'data-tabs-target',
-        tab: 'data-tabs-id',
-    },
+    current: undefined,
+    mutation: undefined,
 };
 
 

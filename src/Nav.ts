@@ -1,22 +1,31 @@
-import EventEmitter, { I_EventEmitter } from "@xaro/event-emitter";
-import { I_Nav, I_NavConstructorConfig, I_Tab, I_Tabs } from "./types";
+import { I_Nav, I_NavConfig, I_NavConstructorConfig, I_Tab, I_Tabs } from "./types";
 
 export default class Nav implements I_Nav {
-  el:       HTMLElement;
   tabs:     I_Tabs;
   tab:      I_Tab;
-  emitter:  I_EventEmitter;
+  config:   I_NavConfig;
 
   constructor(config: I_NavConstructorConfig) {
-    this.el       = config.el;
     this.tabs     = config.tabs;
     this.tab      = config.tab;
-    this.emitter  = new EventEmitter(config.on);
 
-    this.el.addEventListener('click', (() => this.click).bind(this));
+    this.config = {
+      el: config.el
+    };
+
+    this.clickListener = this.clickListener.bind(this);
+    this.config.el.addEventListener('click', this.clickListener as EventListener);
   }
 
-  click() {
-    this.tabs.activate(this.tab.config.index);
+  clickListener(event: MouseEvent | TouchEvent): void {
+    this.tabs.changeTab(this.tab.config.idx);
+  }
+
+  disactivate(): void {
+    this.config.el.classList.remove(this.tabs.config.classes.activeNav);
+  }
+
+  activate(): void {
+    this.config.el.classList.add(this.tabs.config.classes.activeNav);
   }
 }

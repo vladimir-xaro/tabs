@@ -1,15 +1,18 @@
 import { I_EventEmitter } from "@xaro/event-emitter";
+import { I_CSSClassAnimations, T_DOMEventsKeys } from "@xaro/css-class-animations";
 
 /** Tabs */
 export interface I_Tabs {
-  emitter:  I_EventEmitter;
-  items:    I_Tab[];
+  emitter:            I_EventEmitter;
+  items:              I_Tab[];
+  config:             I_TabsConfig;
+  currentPendingTab?: I_Tab;
 
-  activate(index: number): void;
+  changeTab(idx: number): void;
 }
 
 export interface I_TabsConstructorConfig {
-  el: HTMLElement;
+  el: Element;
 
   classes?: {
     navs?:      string;
@@ -18,33 +21,39 @@ export interface I_TabsConstructorConfig {
     tabs?:      string;
     tab?:       string;
     activeTab?: string;
+    animation?: {
+      cancel?:      string;
+      hide?:        string;
+      show?:        string;
+    },
+    transition?: {
+      cancel?:      string;
+      hide?:        string;
+      show?:        string;
+    },
+    wrapper?: {
+      animation?:   string;
+      transition?:  string;
+      false?:       string;
+    }
   };
 
   attr?: {
-    target?:  string;
-    tab?:     string;
+    nav?: string;
+    tab?: string;
   };
 
-  items?: Array<{
-    el?: HTMLElement;
-    on?: {
-      init?:  (tab: I_Tab, index: number) => void | ((tab: I_Tab, index: number) => void)[];
-      hide?:  (tab: I_Tab, index: number) => void | ((tab: I_Tab, index: number) => void)[];
-      show?:  (tab: I_Tab, index: number) => void | ((tab: I_Tab, index: number) => void)[];
-    },
-    current?: boolean;
-  }>;
-  nav?: string | HTMLElement | {
-    
-  }[];
+  mutation?: 'animation' | 'transition' | false; // Tabs animation type
 
   on?: {
-    init?: (tabs: I_Tabs) => void | ((tabs: I_Tabs) => void)[];
+    init?:          (tabs: I_Tabs) => void | ((tabs: I_Tabs) => void)[];
+    beforeChange?:  (tabs: I_Tabs, prevIdx: number, nextIdx: number) => void | ((tabs: I_Tabs, prevIdx: number, nextIdx: number) => void)[];
+    afterChange?:   (tabs: I_Tabs, prevIdx: number, nextIdx: number) => void | ((tabs: I_Tabs, prevIdx: number, nextIdx: number) => void)[];
   };
 }
 
 export interface I_TabsConfig {
-  el:       HTMLElement;
+  el:       Element;
 
   current:  number;
 
@@ -55,61 +64,80 @@ export interface I_TabsConfig {
     tabs:       string;
     tab:        string;
     activeTab:  string;
+    animation: {
+      cancel:     string;
+      hide:       string;
+      show:       string;
+    },
+    transition: {
+      cancel:     string;
+      hide:       string;
+      show:       string;
+    },
+    wrapper: {
+      animation:  string;
+      transition: string;
+      false:      string;
+    }
   };
 
   attr: {
-    target: string;
-    tab:    string;
+    nav:  string;
+    tab:  string;
   };
 
-  items?: Array<{
-    el?: HTMLElement;
-    on?: {
-      init?:  (tab: I_Tab, index: number) => void | ((tab: I_Tab, index: number) => void)[];
-      hide?:  (tab: I_Tab, index: number) => void | ((tab: I_Tab, index: number) => void)[];
-      show?:  (tab: I_Tab, index: number) => void | ((tab: I_Tab, index: number) => void)[];
-    },
-    current?: boolean;
-  }>;
+  mutation: 'animation' | 'transition' | false;
 
   on?: {
-    init?: (tabs: I_Tabs) => void | ((tabs: I_Tabs) => void)[];
+    init?:          (tabs: I_Tabs) => void | ((tabs: I_Tabs) => void)[];
+    beforeChange?:  (tabs: I_Tabs, prevIdx: number, nextIdx: number) => void | ((tabs: I_Tabs, prevIdx: number, nextIdx: number) => void)[];
+    afterChange?:   (tabs: I_Tabs, prevIdx: number, nextIdx: number) => void | ((tabs: I_Tabs, prevIdx: number, nextIdx: number) => void)[];
   };
 }
 
 
 /** Tab */
 export interface I_Tab {
-  emitter:  I_EventEmitter;
-  config:   I_TabConfig;
+  emitter:    I_EventEmitter;
+  config:     I_TabConfig;
+  animation?: I_CSSClassAnimations;
+  pending:    boolean;
 
-  hide(): void;
-  show(): void;
+  hide(config?: I_TabDisplayConfig): void;
+  show(config?: I_TabDisplayConfig): void;
 }
 
 export interface I_TabConstructorConfig {
   tabs:     I_Tabs;
-  index:    number;
-  current?: boolean;
-  el:       HTMLElement;
+  idx:      number;
+  el:       Element;
+  nav?:     I_Nav;
+  visible?: boolean;
 
   on?: {
-    init?:  (tab: I_Tab, index: number) => void | ((tab: I_Tab, index: number) => void)[];
-    hide?:  (tab: I_Tab, index: number) => void | ((tab: I_Tab, index: number) => void)[];
-    show?:  (tab: I_Tab, index: number) => void | ((tab: I_Tab, index: number) => void)[];
+    init?:  (tab: I_Tab, idx: number) => void | ((tab: I_Tab, idx: number) => void)[];
+    hide?:  (tab: I_Tab, idx: number) => void | ((tab: I_Tab, idx: number) => void)[];
+    show?:  (tab: I_Tab, idx: number) => void | ((tab: I_Tab, idx: number) => void)[];
   }
 }
+
 export interface I_TabConfig {
   tabs:     I_Tabs;
-  index:    number;
-  current:  boolean;
-  el:       HTMLElement;
+  idx:      number;
+  el:       Element;
+  nav?:     I_Nav;
+  visible:  boolean;
 
   on?: {
-    init?:  (tab: I_Tab, index: number) => void | ((tab: I_Tab, index: number) => void)[];
-    hide?:  (tab: I_Tab, index: number) => void | ((tab: I_Tab, index: number) => void)[];
-    show?:  (tab: I_Tab, index: number) => void | ((tab: I_Tab, index: number) => void)[];
+    init?:  (tab: I_Tab, idx: number) => void | ((tab: I_Tab, idx: number) => void)[];
+    hide?:  (tab: I_Tab, idx: number) => void | ((tab: I_Tab, idx: number) => void)[];
+    show?:  (tab: I_Tab, idx: number) => void | ((tab: I_Tab, idx: number) => void)[];
   }
+}
+
+export interface I_TabDisplayConfig {
+  after?:     () => void; // default: undefined
+  animated?:  boolean;    // default: true
 }
 
 
@@ -117,18 +145,24 @@ export interface I_TabConfig {
 export interface I_Nav {
   tabs:     I_Tabs;
   tab:      I_Tab;
-  emitter:  I_EventEmitter;
-  el:       HTMLElement;
+  config:   I_NavConfig;
 
-  click(): void;
+  clickListener(event: MouseEvent | TouchEvent): void;
+
+  disactivate(): void;
+  activate(): void;
 }
 
 export interface I_NavConstructorConfig {
-  el:       HTMLElement;
+  el:       Element;
   tabs:     I_Tabs;
   tab:      I_Tab;
 
   on?: {
-    click?:  (tab: I_Tab, index: number) => void | ((tab: I_Tab, index: number) => void)[];
+    click?:  (tab: I_Tab, idx: number) => void | ((tab: I_Tab, idx: number) => void)[];
   }
+}
+
+export interface I_NavConfig {
+  el: Element;
 }

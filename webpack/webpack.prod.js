@@ -13,6 +13,8 @@ module.exports = merge(common, {
     filename:       '[name].js',
     library:        '[name]',
     libraryTarget:  'umd',
+    umdNamedDefine: true,
+    libraryExport:  'default'
   },
 
   optimization: {

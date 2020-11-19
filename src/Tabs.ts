@@ -3,6 +3,7 @@ import EventEmitter, { I_EventEmitter } from '@xaro/event-emitter';
 import extend from '@xaro/extend';
 import Tab from "./Tab";
 import { defaults } from "./variables";
+import Nav from "./Nav";
 
 export default class Tabs implements I_Tabs {
   emitter:  I_EventEmitter;
@@ -11,87 +12,118 @@ export default class Tabs implements I_Tabs {
 
   config:   I_TabsConfig;
 
+  currentPendingTab?: I_Tab = undefined;
+
   constructor(config: I_TabsConstructorConfig) {
     this.config = extend({}, defaults, config);
 
-    this.emitter = new EventEmitter(this.config.on);
+    this.emitter = new EventEmitter({ ...this.config.on });
 
-    let current: number | undefined;
+    this.config.mutation = this.config.mutation === undefined ? 'animation' : this.config.mutation
 
-    // create items
-    if (config.items) {
-      let index = 0;
+    this.config.el.classList.add(this.config.classes.wrapper[new String(this.config.mutation).toString()]);
 
-      for (const configTab of config.items) {
-        let el;
-        if (configTab.el) {
-          el = configTab.el;
-        } else {
-          for (const _el of this.config.el.querySelectorAll('.' + this.config.classes.tab)) {
+    const navEls: NodeListOf<Element> = this.config.el.querySelectorAll('.' + this.config.classes.nav);
+    const tabEls: NodeListOf<Element> = this.config.el.querySelectorAll('.' + this.config.classes.tab);
 
-          }
+    for (let idx = 0; idx < tabEls.length; idx++) {
+      if (this.config.current === undefined) {
+        if (tabEls[idx].classList.contains(this.config.classes.activeTab) || navEls[idx].classList.contains(this.config.classes.activeNav)) {
+          this.config.current = idx;
         }
-        // const el = configTab.el || this.config.el.querySelector('.' + this.config.classes.tab) as HTMLElement,
-        const tab = new Tab({
-          tabs:     this,
-          el:       configTab.el || this.config.el.querySelector('.' + this.config.classes.tab) as HTMLElement,
-          on:       configTab.on,
-          current:  configTab.current === undefined ? false : configTab.current,
-          index,
-        });
-
-        if (configTab.current) {
-          current = index;
-        }
-
-        this.items.push(tab);
       }
-    } else {
-      const els = this.config.el.querySelectorAll('.' + this.config.classes.tab);
 
-      for (let i = 0; i < els.length; i++) {
-        const tab = new Tab({
-          el: els[i] as HTMLElement,
-          tabs: this,
-          index: i
-        })
+      const tab = new Tab({
+        el:   tabEls[idx],
+        tabs: this,
+        idx
+      });
 
-        if (els[i].classList.contains(this.config.classes.activeTab)) {
-          current = i;
-        }
+      const nav = new Nav({
+        tabs: this,
+        el:   navEls[idx],
+        tab
+      });
 
-        this.items.push(tab);
-      }
-    }
+      tab.config.nav = nav;
 
-    if (this.config.items) {
-      let index: number = 0;
-
-      for (const _config of this.config.items) {
-        const el 
-      }
+      this.items.push(tab);
     }
   
-    // set current index
-    this.config.current = current || 0;
+    if (! this.config.current) {
+      this.config.current = 0;
+    }
 
-    // // create navs
-    // if (config.nav) {
-    //   if (config.nav )
-    // }
+    this.fixClasses();
   }
 
-  activate(index: number) {
-    if (index >= this.items.length) {
+  fixClasses() {
+    for (const tab of this.items) {
+      if (tab.config.idx === this.config.current) {
+        tab.show({ animated: false });
+        tab.config.nav?.config.el.classList.add(this.config.classes.activeNav);
+      } else {
+        tab.hide({ animated: false });
+        tab.config.nav?.config.el.classList.remove(this.config.classes.activeNav);
+      }
+    }
+  }
+
+  changeTab(idx: number) {
+    if (! this.items[idx]) {
       return;
     }
 
-    this.emitter.emit('beforeActivate', this, this.config.current, index);
+    const prevIdx = this.config.current;
+    const nextIdx = idx;
 
-    this.items[this.config.current].hide();
-    this.items[index].show();
-    this.config.current = index;
+    if (prevIdx === nextIdx) {
+      return;
+    }
 
-    this.emitter.emit('afterActivate', this, this.config.current, index);
+    const prevTab = this.items[prevIdx];
+    const nextTab = this.items[nextIdx];
+
+    this.emitter.emit('beforeChange', this, prevIdx, nextIdx);
+
+    if (this.config.mutation === false) {
+      prevTab.hide();
+      nextTab.show();
+    } else {
+      if (this.currentPendingTab) {
+        const pendingTab = this.currentPendingTab;
+        pendingTab.emitter.unsubscribe('mutationEnd');
+        pendingTab.emitter.once('mutationEnd', () => {
+          if (pendingTab.config.visible) {
+            pendingTab.hide({
+              after: () => {
+                nextTab.show({
+                  after: () => this.emitter.emit('afterChange', this, prevIdx, nextIdx)
+                });
+              }
+            })
+          } else {
+            nextTab.show({
+              after: () => this.emitter.emit('afterChange', this, prevIdx, nextIdx)
+            });
+          }
+        });
+      } else {
+        prevTab.hide({
+          after: () => {
+            nextTab.show({
+              after: () => this.emitter.emit('afterChange', this, prevIdx, nextIdx)
+            });
+          }
+        });
+      }
+    }
+
+    prevTab.config.nav?.disactivate();
+    nextTab.config.nav?.activate();
+
+    this.config.current = nextIdx;
   }
+
+
 }

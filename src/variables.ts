@@ -4,13 +4,28 @@ export const defaults = {
   classes: {
     navs:       'tabs__navs',
     nav:        'tabs__nav',
-    tabs:       'tabs__items',
-    tab:        'tabs__item',
-    activeTab:  'tabs__item--active'
+    tabs:       'tabs__tabs',
+    tab:        'tabs__tab',
+    activeTab:  'tabs__tab--active',
+    activeNav:  'tabs__nav--active',
+    animation: {
+      cancel:     'tabs__tab--animation-cancel',
+      hide:       'tabs__tab--animation-hide',
+      show:       'tabs__tab--animation-show',
+    },
+    transition: {
+      cancel:     'tabs__tab--transition-cancel',
+      hide:       'tabs__tab--transition-hide',
+      show:       'tabs__tab--transition-show',
+    },
+    wrapper: {
+      animation:  'tabs--animation',
+      transition: 'tabs--transition',
+      false:      'tabs--without-animation'
+    }
   },
 
-  attr: {
-    target: 'data-tabs-target',
-    tab:    'data-tabs-id',
-  },
+  current:  undefined,
+
+  mutation: undefined,
 }
