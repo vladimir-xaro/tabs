@@ -436,22 +436,18 @@ const defaults = {
 // CONCATENATED MODULE: ./src/Nav.ts
 class Nav {
     constructor(config) {
-        this.tabs = config.tabs;
-        this.tab = config.tab;
-        this.config = {
-            el: config.el
-        };
+        this.config = config;
         this.clickListener = this.clickListener.bind(this);
         this.config.el.addEventListener('click', this.clickListener);
     }
     clickListener(event) {
-        this.tabs.changeTab(this.tab.config.idx);
+        this.config.tabs.changeTab(this.config.tab.config.idx);
     }
     disactivate() {
-        this.config.el.classList.remove(this.tabs.config.classes.activeNav);
+        this.config.el.classList.remove(this.config.tabs.config.classes.activeNav);
     }
     activate() {
-        this.config.el.classList.add(this.tabs.config.classes.activeNav);
+        this.config.el.classList.add(this.config.tabs.config.classes.activeNav);
     }
 }
 
@@ -494,6 +490,7 @@ class Tabs {
             this.config.current = 0;
         }
         this.fixClasses();
+        this.emitter.emit('init', this);
     }
     fixClasses() {
         for (const tab of this.items) {

@@ -49,6 +49,21 @@ function isObject(o) {
 
 /***/ }),
 
+/***/ "./src/scss/index.dev.scss":
+/*!*********************************!*\
+  !*** ./src/scss/index.dev.scss ***!
+  \*********************************/
+/*! namespace exports */
+/*! exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./src/scss/index.scss":
 /*!*****************************!*\
   !*** ./src/scss/index.scss ***!
@@ -449,22 +464,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 class Nav {
     constructor(config) {
-        this.tabs = config.tabs;
-        this.tab = config.tab;
-        this.config = {
-            el: config.el
-        };
+        this.config = config;
         this.clickListener = this.clickListener.bind(this);
         this.config.el.addEventListener('click', this.clickListener);
     }
     clickListener(event) {
-        this.tabs.changeTab(this.tab.config.idx);
+        this.config.tabs.changeTab(this.config.tab.config.idx);
     }
     disactivate() {
-        this.config.el.classList.remove(this.tabs.config.classes.activeNav);
+        this.config.el.classList.remove(this.config.tabs.config.classes.activeNav);
     }
     activate() {
-        this.config.el.classList.add(this.tabs.config.classes.activeNav);
+        this.config.el.classList.add(this.config.tabs.config.classes.activeNav);
     }
 }
 
@@ -633,6 +644,7 @@ class Tabs {
             this.config.current = 0;
         }
         this.fixClasses();
+        this.emitter.emit('init', this);
     }
     fixClasses() {
         for (const tab of this.items) {
@@ -712,7 +724,7 @@ class Tabs {
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scss */ "./src/scss/index.scss");
+/* harmony import */ var _scss_index_dev_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scss/index.dev.scss */ "./src/scss/index.dev.scss");
 /* harmony import */ var ___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ */ "./src/index.ts");
 ;
 
@@ -750,9 +762,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var _Tabs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tabs */ "./src/Tabs.ts");
+/* harmony import */ var _scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scss */ "./src/scss/index.scss");
+/* harmony import */ var _Tabs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tabs */ "./src/Tabs.ts");
 ;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_Tabs__WEBPACK_IMPORTED_MODULE_0__.default);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_Tabs__WEBPACK_IMPORTED_MODULE_1__.default);
 
 
 /***/ }),

@@ -55,6 +55,8 @@ export default class Tabs implements I_Tabs {
     }
 
     this.fixClasses();
+
+    this.emitter.emit('init', this);
   }
 
   fixClasses() {

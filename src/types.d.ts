@@ -1,5 +1,5 @@
 import { I_EventEmitter } from "@xaro/event-emitter";
-import { I_CSSClassAnimations, T_DOMEventsKeys } from "@xaro/css-class-animations";
+import { I_CSSClassAnimations } from "@xaro/css-class-animations";
 
 /** Tabs */
 export interface I_Tabs {
@@ -136,33 +136,27 @@ export interface I_TabConfig {
 }
 
 export interface I_TabDisplayConfig {
-  after?:     () => void; // default: undefined
+  after?:     () => void; // default: undefined (only for animation or transition mutation)
   animated?:  boolean;    // default: true
 }
 
 
 /** Nav */
 export interface I_Nav {
-  tabs:     I_Tabs;
-  tab:      I_Tab;
-  config:   I_NavConfig;
+  config: I_NavConfig;
 
-  clickListener(event: MouseEvent | TouchEvent): void;
-
-  disactivate(): void;
-  activate(): void;
+  disactivate():  void;
+  activate():     void;
 }
 
 export interface I_NavConstructorConfig {
   el:       Element;
   tabs:     I_Tabs;
   tab:      I_Tab;
-
-  on?: {
-    click?:  (tab: I_Tab, idx: number) => void | ((tab: I_Tab, idx: number) => void)[];
-  }
 }
 
 export interface I_NavConfig {
-  el: Element;
+  el:   Element;
+  tabs: I_Tabs;
+  tab:  I_Tab;
 }
