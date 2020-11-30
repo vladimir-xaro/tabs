@@ -1,3 +1,55 @@
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes fadeOut{from{opacity:1}to{opacity:0}}*,*:before,*:after{box-sizing:border-box}.container{max-width:100%;width:600px}.tabs__navs{display:flex;margin-bottom:15px}.tabs__nav{padding:5px 10px;margin-right:5px;border-radius:4px;background-color:#d2ff8e;user-select:none;cursor:pointer}.tabs__nav:last-child{margin-right:0}.tabs__nav--active{border:solid 1px #000;cursor:default}.tabs__tab{display:none;padding:5px;border:solid 1px #000}.tabs__tab--active{display:block}.tabs__tab--animation-cancel{animation:none !important}.tabs__tab--animation-show{animation:fadeIn 1300ms both}.tabs__tab--animation-hide{animation:fadeOut 1300ms both}.tabs__tab--transition-cancel{transition-duration:0s !important}.tabs__tab--transition-show{opacity:1}.tabs__tab--transition-hide{opacity:0}.tabs--without-animation .tabs__tab{opacity:1}.tabs--animation .tabs__tab{transition-duration:0s;opacity:1}.tabs--transition .tabs__tab{transition-duration:1300ms;opacity:0}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.tabs__nav {
+  user-select: none;
+  cursor: pointer;
+}
+.tabs__nav--active {
+  cursor: default;
+}
+.tabs__tab {
+  display: none;
+}
+.tabs__tab--active {
+  display: block;
+}
+.tabs__tab--transition-leave {
+  opacity: 1;
+}
+.tabs__tab--transition-leave-active {
+  transition-duration: 150ms;
+}
+.tabs__tab--transition-leave-to {
+  opacity: 0;
+}
+.tabs__tab--transition-enter {
+  opacity: 0;
+}
+.tabs__tab--transition-enter-active {
+  transition-duration: 150ms;
+}
+.tabs__tab--transition-enter-to {
+  opacity: 1;
+}
+.tabs__tab--animation-leave-to {
+  animation: fadeOut 150ms both;
+}
+.tabs__tab--animation-enter-to {
+  animation: fadeIn 150ms both;
+}
 
 /*# sourceMappingURL=Tabs.css.map*/

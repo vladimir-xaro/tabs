@@ -28,43 +28,26 @@ module.exports = {
         }
       },
 
-      {
-        test: /\.(scss|css)$/,
-        use: [
+      // {
+      //   test: /\.(scss|css)$/,
+      //   use: [
 
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              // hmr: false
-            }
-          }, {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1
-            }
-          }, {
-            loader: 'sass-loader',
-            options: {
-              // sassOptions: {
-              //   precision:    8,
-              //   outputStyle:  'nested',
-              // }
-            }
-          }
+      //     {
+      //       loader: MiniCssExtractPlugin.loader
+      //     }, {
+      //       loader: 'css-loader',
+      //       options: {
+      //         importLoaders: 1
+      //       }
+      //     }, {
+      //       loader: 'sass-loader'
+      //     }
 
-        ]
-      }
+      //   ]
+      // }
 
     ],
   },
-
-
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-      // chunkFilename: 'css/chunks/[name]-[id].css',
-    }),
-  ],
 
 
   experiments: {

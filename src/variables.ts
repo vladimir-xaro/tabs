@@ -8,21 +8,32 @@ export const defaults = {
     tab:        'tabs__tab',
     activeTab:  'tabs__tab--active',
     activeNav:  'tabs__nav--active',
+
     animation: {
-      cancel:     'tabs__tab--animation-cancel',
-      hide:       'tabs__tab--animation-hide',
-      show:       'tabs__tab--animation-show',
+      leave: {
+        from:     'tabs__tab--animation-leave',
+        active:   'tabs__tab--animation-leave-active',
+        to:       'tabs__tab--animation-leave-to',
+      },
+      enter: {
+        from:     'tabs__tab--animation-enter',
+        active:   'tabs__tab--animation-enter-active',
+        to:       'tabs__tab--animation-enter-to',
+      },
     },
+
     transition: {
-      cancel:     'tabs__tab--transition-cancel',
-      hide:       'tabs__tab--transition-hide',
-      show:       'tabs__tab--transition-show',
+      leave: {
+        from:     'tabs__tab--transition-leave',
+        active:   'tabs__tab--transition-leave-active',
+        to:       'tabs__tab--transition-leave-to',
+      },
+      enter: {
+        from:     'tabs__tab--transition-enter',
+        active:   'tabs__tab--transition-enter-active',
+        to:       'tabs__tab--transition-enter-to',
+      },
     },
-    wrapper: {
-      animation:  'tabs--animation',
-      transition: 'tabs--transition',
-      false:      'tabs--without-animation'
-    }
   },
 
   current:  undefined,

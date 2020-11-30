@@ -49,10 +49,10 @@ function isObject(o) {
 
 /***/ }),
 
-/***/ "./src/scss/index.dev.scss":
-/*!*********************************!*\
-  !*** ./src/scss/index.dev.scss ***!
-  \*********************************/
+/***/ "./src/scss/index.examples.scss":
+/*!**************************************!*\
+  !*** ./src/scss/index.examples.scss ***!
+  \**************************************/
 /*! namespace exports */
 /*! exports [not provided] [no usage info] */
 /*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.* */
@@ -527,17 +527,6 @@ class MicroDOM extends Array {
         }
         return this;
     }
-    nextTick(...cbs) {
-        const arr = cbs;
-        const current = cbs.shift();
-        current && setTimeout(() => {
-            current();
-            if (arr.length) {
-                this.nextTick(...arr);
-            }
-        }, 0);
-        return this;
-    }
 }
 
 
@@ -658,7 +647,8 @@ __webpack_require__.r(__webpack_exports__);
 class Nav {
     constructor(config) {
         this.config = config;
-        this.config.el.addEventListener('click', this.clickListener.bind(this));
+        this.clickListener = this.clickListener.bind(this);
+        this.config.el.addEventListener('click', this.clickListener);
     }
     clickListener(event) {
         this.config.tabs.changeTab(this.config.tab.config.idx);
@@ -697,89 +687,81 @@ class Tab {
         this.pending = false;
         this.config = config;
         this.emitter = new _xaro_event_emitter__WEBPACK_IMPORTED_MODULE_0__.default({ ...this.config.on });
-        const tabsConfig = this.config.tabs.config;
-        if (tabsConfig.mutation !== false) {
+        if (this.config.tabs.config.mutation !== false) {
             this.animation = new _xaro_css_class_animations__WEBPACK_IMPORTED_MODULE_1__.default({
                 el: this.config.el,
-                allow: tabsConfig.mutation + 'end',
+                allow: [this.config.tabs.config.mutation + 'end'],
                 on: {
-                    end: this.__mutationEndCallback.bind(this)
+                    end: [
+                        this.__mutationEndCallback.bind(this)
+                    ]
                 }
             });
         }
     }
-    __mutationStartCallback(event) {
-        this.pending = true;
-        this.emitter.emit('__techMutationStart__', event);
-        this.emitter.emit('mutationStart', event);
-    }
     __mutationEndCallback(event) {
         this.pending = false;
-        this.emitter.emit('__techMutationEnd__', event);
+        this.emitter.emit('internalMutationEnd', event);
         this.config.tabs.currentPendingTab = undefined;
         this.emitter.emit('mutationEnd', event);
     }
     hide(config) {
         const classes = this.config.tabs.config.classes;
         const mutation = this.config.tabs.config.mutation;
+        this.pending = true;
+        this.config.tabs.currentPendingTab = config && config.animated !== false ? this : undefined;
         if (mutation === false) {
             this.config.el.removeClass(classes.activeTab);
         }
-        else if (config && config.animated === false) {
-            this.config.el.removeClass(classes.activeTab);
-            this.config.visible = false;
-        }
         else {
-            const mtClsLeave = classes[mutation].leave;
-            this.config.tabs.currentPendingTab = this;
+            if (config && config.animated === false) {
+                this.config.tabs.currentPendingTab = undefined;
+                this.animation.els.addClass(classes[mutation].cancel);
+            }
+            this.animation.els.removeClass(classes[mutation].hide, classes[mutation].show);
             if (config && config.after) {
+                this.emitter.once('internalMutationEnd', () => {
+                    this.animation.els.removeClass(classes.activeTab);
+                    this.config.visible = false;
+                });
                 this.emitter.once('mutationEnd', () => {
                     config.after();
                 });
-            }
-            this.emitter.once('__techMutationEnd__', () => {
-                this.config.el.removeClass(classes.activeTab, mtClsLeave.active, mtClsLeave.from, mtClsLeave.to);
-                this.config.visible = false;
-            });
-            this.config.el.addClass(mtClsLeave.from, mtClsLeave.active);
-            // this.config.el.nextTick( () => this.config.el.addClass(mtClsLeave.to) );
-            if (mutation === 'animation') {
-                this.config.el.addClass(mtClsLeave.to);
+                this.animation.els.addClass(classes[mutation].hide);
             }
             else {
-                this.config.el.nextTick(() => this.config.el.addClass(mtClsLeave.to));
+                this.animation.els.removeClass(classes.activeTab);
+            }
+            if (config && config.animated === false) {
+                this.animation.els.removeClass(classes[mutation].cancel);
             }
         }
     }
     show(config) {
         const classes = this.config.tabs.config.classes;
         const mutation = this.config.tabs.config.mutation;
+        this.pending = true;
+        this.config.tabs.currentPendingTab = this;
         if (mutation === false) {
             this.config.el.addClass(classes.activeTab);
         }
-        else if (config && config.animated === false) {
-            this.config.el.addClass(classes.activeTab);
-            this.config.visible = true;
-        }
         else {
-            const mtClsEnter = classes[mutation].enter;
-            this.config.tabs.currentPendingTab = this;
-            if (config && config.after) {
-                this.emitter.once('mutationEnd', () => {
-                    config.after();
-                });
+            if (config && config.animated === false) {
+                this.animation.els.addClass(classes[mutation].cancel);
             }
-            this.emitter.once('__techMutationEnd__', () => {
-                this.config.el.removeClass(mtClsEnter.active, mtClsEnter.from, mtClsEnter.to);
-            });
-            this.config.el.addClass(mtClsEnter.from, mtClsEnter.active, classes.activeTab);
-            if (mutation === 'animation') {
-                this.config.el.addClass(mtClsEnter.to);
+            this.animation.els.removeClass(classes[mutation].hide, classes[mutation].show);
+            if (config) {
+                if (config.after) {
+                    this.emitter.once('mutationEnd', () => {
+                        config.after();
+                    });
+                }
             }
-            else {
-                this.config.el.nextTick(() => this.config.el.addClass(mtClsEnter.to));
-            }
+            this.animation.els.addClass(classes.activeTab, classes[mutation].show);
             this.config.visible = true;
+            if (config && config.animated === false) {
+                this.animation.els.removeClass(classes[mutation].show, classes[mutation].cancel);
+            }
         }
     }
 }
@@ -821,6 +803,7 @@ class Tabs {
         this.emitter = new _xaro_event_emitter__WEBPACK_IMPORTED_MODULE_0__.default({ ...this.config.on });
         this.config.mutation = this.config.mutation === undefined ? 'animation' : this.config.mutation;
         this.config.el = config.el instanceof _xaro_micro_dom__WEBPACK_IMPORTED_MODULE_1__.MicroDOM ? this.config.el : (0,_xaro_micro_dom__WEBPACK_IMPORTED_MODULE_1__.default)(config.el);
+        this.config.el.addClass(this.config.classes.wrapper[new String(this.config.mutation).toString()]);
         const navEls = this.config.el.get('.' + this.config.classes.nav);
         const tabEls = this.config.el.get('.' + this.config.classes.tab);
         for (let idx = 0; idx < tabEls.length; idx++) {
@@ -852,11 +835,11 @@ class Tabs {
         for (const tab of this.items) {
             if (tab.config.idx === this.config.current) {
                 tab.show({ animated: false });
-                tab.config.nav?.activate();
+                tab.config.nav?.config.el.addClass(this.config.classes.activeNav);
             }
             else {
                 tab.hide({ animated: false });
-                tab.config.nav?.disactivate();
+                tab.config.nav?.config.el.removeClass(this.config.classes.activeNav);
             }
         }
     }
@@ -916,75 +899,36 @@ class Tabs {
 
 /***/ }),
 
-/***/ "./src/index.dev.ts":
-/*!**************************!*\
-  !*** ./src/index.dev.ts ***!
-  \**************************/
+/***/ "./src/index.examples.ts":
+/*!*******************************!*\
+  !*** ./src/index.examples.ts ***!
+  \*******************************/
 /*! namespace exports */
 /*! exports [not provided] [no usage info] */
 /*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _scss_index_dev_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scss/index.dev.scss */ "./src/scss/index.dev.scss");
+/* harmony import */ var _scss_index_examples_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scss/index.examples.scss */ "./src/scss/index.examples.scss");
 /* harmony import */ var ___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ */ "./src/index.ts");
-/* harmony import */ var _xaro_micro_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @xaro/micro-dom */ "./node_modules/@xaro/micro-dom/src/index.ts");
 
 
-
-// const tabs = new Tabs({
-//   el:       '.tabs-0',
-//   mutation: 'transition',
-//   // mutation: 'animation',
-//   // mutation: false,
-//   // on: {
-//   //   init: (tabs: I_Tabs) => {
-//   //     console.log('[init]');
-//   //   },
-//   //   beforeChange: (tabs: I_Tabs, prevIdx: number, nextIdx: number) => {
-//   //     console.log('[beforeChange]', prevIdx, nextIdx);
-//   //   },
-//   //   afterChange: (tabs: I_Tabs, prevIdx: number, nextIdx: number) => {
-//   //     console.log('[afterChange]', prevIdx, nextIdx);
-//   //   }
-//   // }
-// });
-const tabs = (0,_xaro_micro_dom__WEBPACK_IMPORTED_MODULE_2__.default)('.tabs').map(el => new ___WEBPACK_IMPORTED_MODULE_1__.default({
-    el,
+window.tabs = new ___WEBPACK_IMPORTED_MODULE_1__.default({
+    el: document.querySelector('.tabs-1'),
     mutation: 'animation',
-}));
-let interval;
-function test(delay = 50) {
-    interval = setInterval(() => {
-        for (const tab of tabs) {
-            tab.changeTab(Math.floor(Math.random() * tab.items.length));
-        }
-    }, delay);
-}
-;
-function stop() {
-    clearInterval(interval);
-    setTimeout(check, 1500);
-}
-;
-function check() {
-    let completed = 0;
-    for (const _tabs of tabs) {
-        const current = _tabs.config.current;
-        const navIdx = _tabs.config.el.get('.tabs__nav').indexOf(_tabs.config.el.get('.tabs__nav--active')[0]);
-        const tabIdx = _tabs.config.el.get('.tabs__tab').indexOf(_tabs.config.el.get('.tabs__tab--active')[0]);
-        if (current === navIdx && navIdx === tabIdx) {
-            completed++;
+    // mutation: false,
+    on: {
+        init: (tabs) => {
+            console.log('[init]');
+        },
+        beforeChange: (tabs, prevIdx, nextIdx) => {
+            console.log('[beforeChange]', prevIdx, nextIdx);
+        },
+        afterChange: (tabs, prevIdx, nextIdx) => {
+            console.log('[afterChange]', prevIdx, nextIdx);
         }
     }
-    console.log('Length: ', tabs.length);
-    console.log('Completed: ', completed);
-}
-;
-window.test = test;
-window.stop = stop;
-window.check = check;
-window.tabs = tabs[0];
+});
 
 
 /***/ }),
@@ -1036,29 +980,20 @@ const defaults = {
         activeTab: 'tabs__tab--active',
         activeNav: 'tabs__nav--active',
         animation: {
-            leave: {
-                from: 'tabs__tab--animation-leave',
-                active: 'tabs__tab--animation-leave-active',
-                to: 'tabs__tab--animation-leave-to',
-            },
-            enter: {
-                from: 'tabs__tab--animation-enter',
-                active: 'tabs__tab--animation-enter-active',
-                to: 'tabs__tab--animation-enter-to',
-            },
+            cancel: 'tabs__tab--animation-cancel',
+            hide: 'tabs__tab--animation-hide',
+            show: 'tabs__tab--animation-show',
         },
         transition: {
-            leave: {
-                from: 'tabs__tab--transition-leave',
-                active: 'tabs__tab--transition-leave-active',
-                to: 'tabs__tab--transition-leave-to',
-            },
-            enter: {
-                from: 'tabs__tab--transition-enter',
-                active: 'tabs__tab--transition-enter-active',
-                to: 'tabs__tab--transition-enter-to',
-            },
+            cancel: 'tabs__tab--transition-cancel',
+            hide: 'tabs__tab--transition-hide',
+            show: 'tabs__tab--transition-show',
         },
+        wrapper: {
+            animation: 'tabs--animation',
+            transition: 'tabs--transition',
+            false: 'tabs--without-animation'
+        }
     },
     current: undefined,
     mutation: undefined,
@@ -1124,8 +1059,8 @@ const defaults = {
 /************************************************************************/
 /******/ 	// startup
 /******/ 	// Load entry module
-/******/ 	__webpack_require__("./src/index.dev.ts");
+/******/ 	__webpack_require__("./src/index.examples.ts");
 /******/ 	// This entry module used 'exports' so it can't be inlined
 /******/ })()
 ;
-//# sourceMappingURL=Tabs.dev.js.map
+//# sourceMappingURL=Tabs.examples.js.map

@@ -6,8 +6,7 @@ export default class Nav implements I_Nav {
   constructor(config: I_NavConstructorConfig) {
     this.config = config;
 
-    this.clickListener = this.clickListener.bind(this);
-    this.config.el.addEventListener('click', this.clickListener as EventListener);
+    this.config.el.addEventListener('click', this.clickListener.bind(this) as EventListener);
   }
 
   protected clickListener(event: MouseEvent | TouchEvent): void {
@@ -15,10 +14,10 @@ export default class Nav implements I_Nav {
   }
 
   disactivate(): void {
-    this.config.el.classList.remove(this.config.tabs.config.classes.activeNav);
+    this.config.el.removeClass(this.config.tabs.config.classes.activeNav);
   }
 
   activate(): void {
-    this.config.el.classList.add(this.config.tabs.config.classes.activeNav);
+    this.config.el.addClass(this.config.tabs.config.classes.activeNav);
   }
 }

@@ -1,12 +1,15 @@
 {
   "name": "@xaro/tabs",
   "version": "0.0.1",
-  "description": "",
+  "description": "Tabs with events and additional features",
   "main": "src/index.ts",
   "scripts": {
     "watch": "cross-env NODE_ENV=development webpack --watch --config webpack/webpack.dev.js",
     "build": "cross-env NODE_ENV=development webpack --config webpack/webpack.dev.js",
-    "watch:prod": "cross-env NODE_ENV=production webpack --watch --config webpack/webpack.prod.js",
+    "watch:themes": "cross-env NODE_ENV=development webpack --watch --config webpack/webpack.themes.js",
+    "build:themes": "cross-env NODE_ENV=development webpack --config webpack/webpack.themes.js",
+    "watch:examples": "cross-env NODE_ENV=development webpack --watch --config webpack/webpack.examples.js",
+    "build:examples": "cross-env NODE_ENV=development webpack --config webpack/webpack.examples.js",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "build:prod:min": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.min.js"
   },
@@ -15,6 +18,7 @@
     "url": "git+https://github.com/vladimir-xaro/tabs.git"
   },
   "keywords": [
+    "front-end",
     "tabs",
     "events",
     "css-animations",
@@ -27,26 +31,31 @@
   },
   "homepage": "https://github.com/vladimir-xaro/tabs#readme",
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1",
-    "@types/webpack-env": "^1.15.3",
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "@types/webpack-env": "^1.16.0",
     "@xaro/extend": "^1.0.4",
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^8.2.2",
     "cross-env": "^7.0.2",
     "css-loader": "^5.0.1",
-    "mini-css-extract-plugin": "^1.3.0",
+    "css-minimizer-webpack-plugin": "^1.1.5",
+    "extract-loader": "^5.1.0",
+    "file-loader": "^6.2.0",
+    "mini-css-extract-plugin": "^1.3.1",
     "node-sass": "^5.0.0",
+    "remove-files-webpack-plugin": "^1.4.4",
     "sass": "^1.29.0",
-    "sass-loader": "^10.0.5",
+    "sass-loader": "^10.1.0",
     "terser-webpack-plugin": "^5.0.3",
-    "ts-loader": "^8.0.9",
-    "typescript": "^4.0.5",
-    "webpack": "^5.4.0",
+    "ts-loader": "^8.0.11",
+    "typescript": "^4.1.2",
+    "webpack": "^5.9.0",
     "webpack-cli": "^4.2.0",
-    "webpack-merge": "^5.3.0"
+    "webpack-merge": "^5.4.0"
   },
   "dependencies": {
-    "@xaro/css-class-animations": "0.0.8",
-    "@xaro/event-emitter": "^1.4.3"
+    "@xaro/css-class-animations": "0.1.3",
+    "@xaro/event-emitter": "^1.4.3",
+    "@xaro/micro-dom": "^0.1.6"
   }
 }

@@ -1,5 +1,6 @@
 import { I_Tabs, I_TabsConstructorConfig, I_TabsConfig, I_Tab } from "./types";
 import EventEmitter, { I_EventEmitter } from '@xaro/event-emitter';
+import _, { I_MicroDOM, MicroDOM } from "@xaro/micro-dom";
 import extend from '@xaro/extend';
 import Tab from "./Tab";
 import { defaults } from "./variables";
@@ -20,11 +21,11 @@ export default class Tabs implements I_Tabs {
     this.emitter = new EventEmitter({ ...this.config.on });
 
     this.config.mutation = this.config.mutation === undefined ? 'animation' : this.config.mutation
+    
+    this.config.el = config.el instanceof MicroDOM ? this.config.el : _(config.el as string | Element);
 
-    this.config.el.classList.add(this.config.classes.wrapper[new String(this.config.mutation).toString()]);
-
-    const navEls: NodeListOf<Element> = this.config.el.querySelectorAll('.' + this.config.classes.nav);
-    const tabEls: NodeListOf<Element> = this.config.el.querySelectorAll('.' + this.config.classes.tab);
+    const navEls: I_MicroDOM = this.config.el.get('.' + this.config.classes.nav);
+    const tabEls: I_MicroDOM = this.config.el.get('.' + this.config.classes.tab);
 
     for (let idx = 0; idx < tabEls.length; idx++) {
       if (this.config.current === undefined) {
@@ -34,14 +35,14 @@ export default class Tabs implements I_Tabs {
       }
 
       const tab = new Tab({
-        el:   tabEls[idx],
+        el:   _(tabEls[idx]),
         tabs: this,
         idx
       });
 
       const nav = new Nav({
         tabs: this,
-        el:   navEls[idx],
+        el:   _(navEls[idx]),
         tab
       });
 
@@ -59,14 +60,14 @@ export default class Tabs implements I_Tabs {
     this.emitter.emit('init', this);
   }
 
-  fixClasses() {
+  protected fixClasses() {
     for (const tab of this.items) {
       if (tab.config.idx === this.config.current) {
         tab.show({ animated: false });
-        tab.config.nav?.config.el.classList.add(this.config.classes.activeNav);
+        tab.config.nav?.activate();
       } else {
         tab.hide({ animated: false });
-        tab.config.nav?.config.el.classList.remove(this.config.classes.activeNav);
+        tab.config.nav?.disactivate();
       }
     }
   }
@@ -126,6 +127,4 @@ export default class Tabs implements I_Tabs {
 
     this.config.current = nextIdx;
   }
-
-
 }

@@ -1,7 +1,10 @@
 import { I_EventEmitter } from "@xaro/event-emitter";
 import { I_CSSClassAnimations } from "@xaro/css-class-animations";
+import { I_MicroDOM } from "@xaro/micro-dom";
+
 
 /** Tabs */
+
 export interface I_Tabs {
   emitter:            I_EventEmitter;
   items:              I_Tab[];
@@ -12,7 +15,7 @@ export interface I_Tabs {
 }
 
 export interface I_TabsConstructorConfig {
-  el: Element;
+  el: string | Element | I_MicroDOM;
 
   classes?: {
     navs?:      string;
@@ -22,20 +25,29 @@ export interface I_TabsConstructorConfig {
     tab?:       string;
     activeTab?: string;
     animation?: {
-      cancel?:      string;
-      hide?:        string;
-      show?:        string;
-    },
+      leave?: {
+        from?:    string;
+        active?:  string;
+        to?:      string;
+      };
+      enter?: {
+        from?:    string;
+        active?:  string;
+        to?:      string;
+      };
+    };
     transition?: {
-      cancel?:      string;
-      hide?:        string;
-      show?:        string;
-    },
-    wrapper?: {
-      animation?:   string;
-      transition?:  string;
-      false?:       string;
-    }
+      leave?: {
+        from?:    string;
+        active?:  string;
+        to?:      string;
+      };
+      enter?: {
+        from?:    string;
+        active?:  string;
+        to?:      string;
+      };
+    };
   };
 
   attr?: {
@@ -53,7 +65,7 @@ export interface I_TabsConstructorConfig {
 }
 
 export interface I_TabsConfig {
-  el:       Element;
+  el:       I_MicroDOM;
 
   current:  number;
 
@@ -65,20 +77,29 @@ export interface I_TabsConfig {
     tab:        string;
     activeTab:  string;
     animation: {
-      cancel:     string;
-      hide:       string;
-      show:       string;
-    },
+      leave: {
+        from:     string;
+        active:   string;
+        to:       string;
+      };
+      enter: {
+        from:     string;
+        active:   string;
+        to:       string;
+      };
+    };
     transition: {
-      cancel:     string;
-      hide:       string;
-      show:       string;
-    },
-    wrapper: {
-      animation:  string;
-      transition: string;
-      false:      string;
-    }
+      leave: {
+        from:     string;
+        active:   string;
+        to:       string;
+      };
+      enter: {
+        from:     string;
+        active:   string;
+        to:       string;
+      };
+    };
   };
 
   attr: {
@@ -97,6 +118,7 @@ export interface I_TabsConfig {
 
 
 /** Tab */
+
 export interface I_Tab {
   emitter:    I_EventEmitter;
   config:     I_TabConfig;
@@ -110,7 +132,7 @@ export interface I_Tab {
 export interface I_TabConstructorConfig {
   tabs:     I_Tabs;
   idx:      number;
-  el:       Element;
+  el:       I_MicroDOM;
   nav?:     I_Nav;
   visible?: boolean;
 
@@ -124,7 +146,7 @@ export interface I_TabConstructorConfig {
 export interface I_TabConfig {
   tabs:     I_Tabs;
   idx:      number;
-  el:       Element;
+  el:       I_MicroDOM;
   nav?:     I_Nav;
   visible:  boolean;
 
@@ -142,6 +164,7 @@ export interface I_TabDisplayConfig {
 
 
 /** Nav */
+
 export interface I_Nav {
   config: I_NavConfig;
 
@@ -150,13 +173,13 @@ export interface I_Nav {
 }
 
 export interface I_NavConstructorConfig {
-  el:       Element;
+  el:       I_MicroDOM;
   tabs:     I_Tabs;
   tab:      I_Tab;
 }
 
 export interface I_NavConfig {
-  el:   Element;
+  el:   I_MicroDOM;
   tabs: I_Tabs;
   tab:  I_Tab;
 }

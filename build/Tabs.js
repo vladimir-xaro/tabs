@@ -12,7 +12,7 @@ return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 471:
+/***/ 192:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 
@@ -21,7 +21,7 @@ __webpack_require__.d(__webpack_exports__, {
   "default": () => /* binding */ src_0
 });
 
-// CONCATENATED MODULE: ./node_modules/@xaro/event-emitter/src/EventEmitter.ts
+;// CONCATENATED MODULE: ./node_modules/@xaro/event-emitter/src/EventEmitter.ts
 class EventEmitter {
     /**
      * Create Emitter
@@ -164,11 +164,182 @@ class EventEmitter {
     }
 }
 
-// CONCATENATED MODULE: ./node_modules/@xaro/event-emitter/src/index.ts
-;
+;// CONCATENATED MODULE: ./node_modules/@xaro/event-emitter/src/index.ts
+
 /* harmony default export */ const src = (EventEmitter);
 
-// CONCATENATED MODULE: ./node_modules/@xaro/extend/index.js
+;// CONCATENATED MODULE: ./node_modules/@xaro/micro-dom/src/helpers.ts
+function getEls(target, ...els) {
+    const arr = [];
+    for (const el of els) {
+        if (typeof el === 'string') {
+            const nodes = target.querySelectorAll(el);
+            arr.push(...nodes);
+        }
+        else if (el instanceof Element) {
+            arr.push(el);
+        }
+    }
+    return arr;
+}
+function recursiveAppend(el, ...content) {
+    for (const entity of content) {
+        if (Array.isArray(entity)) {
+            recursiveAppend(el, ...entity);
+        }
+        else {
+            el.append(entity);
+        }
+    }
+}
+
+;// CONCATENATED MODULE: ./node_modules/@xaro/micro-dom/src/MicroDOM.ts
+
+class MicroDOM extends Array {
+    constructor(...args) {
+        super(...args);
+    }
+    get(...args) {
+        let newInstance = new MicroDOM;
+        if (this.length) {
+            for (const el of this) {
+                newInstance.push(...getEls(el, ...args));
+            }
+        }
+        else {
+            newInstance.push(...getEls(document, ...args));
+        }
+        return newInstance;
+    }
+    create(...entities) {
+        let newInstance = new MicroDOM;
+        for (const entity of entities) {
+            if (typeof entity === 'string') {
+                newInstance.push(document.createElement(entity));
+            }
+            else if (entity instanceof Object) {
+                const el = document.createElement(entity.tagName || 'div');
+                if (entity.content) {
+                    if (Array.isArray(entity.content)) {
+                        recursiveAppend(el, ...entity.content);
+                    }
+                    else {
+                        recursiveAppend(el, entity.content);
+                    }
+                }
+                newInstance.push(el);
+            }
+        }
+        return newInstance;
+    }
+    empty() {
+        for (const el of this) {
+            el.innerHTML = '';
+        }
+        return this;
+    }
+    append(...append) {
+        for (const el of this) {
+            recursiveAppend(el, ...append);
+        }
+        return this;
+    }
+    addClass(...classes) {
+        for (const el of this) {
+            el.classList.add(...classes);
+        }
+        return this;
+    }
+    removeClass(...classes) {
+        for (const el of this) {
+            el.classList.remove(...classes);
+        }
+        return this;
+    }
+    toggleClass(classname) {
+        for (const el of this) {
+            el.classList.toggle(classname);
+        }
+        return this;
+    }
+    hasClass(classname, reqtForAll = false) {
+        if (reqtForAll) { // The presence of a class for each element of the set
+            let number = 0;
+            for (const el of this) {
+                if (el.classList.contains(classname)) {
+                    number++;
+                }
+            }
+            return number === this.length;
+        }
+        else { // the presence of a class for at least one element of the set
+            for (const el of this) {
+                if (el.classList.contains(classname)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+    addEventListener(type, listener, options) {
+        for (const el of this) {
+            el.addEventListener(type, listener, options);
+        }
+        return this;
+    }
+    removeEventListener(type, listener, options) {
+        for (const el of this) {
+            el.removeEventListener(type, listener, options);
+        }
+        return this;
+    }
+    css(obj) {
+        for (const el of this) {
+            for (const key in obj) {
+                el.style[key] = obj[key];
+            }
+        }
+        return this;
+    }
+    attr(obj) {
+        for (const el of this) {
+            for (const key in obj) {
+                el.setAttribute(key, obj[key]);
+            }
+        }
+        return this;
+    }
+    nextTick(...cbs) {
+        const arr = cbs;
+        const current = cbs.shift();
+        current && setTimeout(() => {
+            current();
+            if (arr.length) {
+                this.nextTick(...arr);
+            }
+        }, 0);
+        return this;
+    }
+}
+
+;// CONCATENATED MODULE: ./node_modules/@xaro/micro-dom/src/entry.ts
+
+
+function _(...args) {
+    if (args instanceof MicroDOM) {
+        return args;
+    }
+    return new MicroDOM(...getEls(document, ...args));
+}
+
+;// CONCATENATED MODULE: ./node_modules/@xaro/micro-dom/src/index.ts
+
+/* harmony default export */ const micro_dom_src = (_);
+// ===
+
+
+
+;// CONCATENATED MODULE: ./node_modules/@xaro/extend/index.js
 function extend(...args) {
   const to = Object(args[0]);
   for (let i = 1; i < args.length; i += 1) {
@@ -197,7 +368,7 @@ function extend(...args) {
 function isObject(o) {
   return typeof o === 'object' && o !== null && o.constructor && o.constructor === Object;
 }
-// CONCATENATED MODULE: ./node_modules/@xaro/css-class-animations/src/variables.ts
+;// CONCATENATED MODULE: ./node_modules/@xaro/css-class-animations/src/variables.ts
 const eventsListeners = {
     animationstart: '__mutationStartListener',
     animationcancel: '__mutationCancelListener',
@@ -210,38 +381,23 @@ const eventsListeners = {
 };
 const events = Object.keys(eventsListeners);
 
-// CONCATENATED MODULE: ./node_modules/@xaro/css-class-animations/src/helpers.ts
-function addTo(origin, value) {
-    if (typeof value === 'string') {
-        origin.push(...document.querySelectorAll(value));
-    }
-    else if (value instanceof Element) {
-        origin.push(value);
-    }
-}
+;// CONCATENATED MODULE: ./node_modules/@xaro/css-class-animations/src/CSSClassAnimations.ts
 
-// CONCATENATED MODULE: ./node_modules/@xaro/css-class-animations/src/CSSClassAnimations.ts
-;
 
 
 class CSSClassAnimations {
     constructor(config) {
-        this.els = [];
         this.emitter = new src(config.on);
         if (Array.isArray(config.el)) {
-            for (const val of config.el) {
-                addTo(this.els, val);
-            }
+            this.els = micro_dom_src(...config.el);
         }
         else {
-            addTo(this.els, config.el);
+            this.els = micro_dom_src(config.el);
         }
         if (config.allow) {
-            // this.allow = config.allow.filter(value => events.includes(value));
             this.allow = (Array.isArray(config.allow) ? config.allow : [config.allow]).filter(value => events.includes(value));
         }
         else if (config.disallow) {
-            // this.allow = events.filter(value => !config.disallow!.includes(value as T_DOMEventsKeys));
             this.allow = (Array.isArray(config.disallow) ? config.disallow : [config.disallow]).filter(value => events.includes(value));
         }
         else {
@@ -287,123 +443,111 @@ class CSSClassAnimations {
             el.removeEventListener(domEventKey, this[eventsListeners[domEventKey]]);
         }
     }
-    addClass(...classes) {
-        for (const el of this.els) {
-            el.classList.add(...classes);
-        }
-        return this.els;
-    }
-    removeClass(...classes) {
-        for (const el of this.els) {
-            el.classList.remove(...classes);
-        }
-        return this.els;
-    }
-    css(obj) {
-        for (const el of this.els) {
-            for (const key in obj) {
-                el.style[key] = obj[key];
-            }
-        }
-        return this.els;
-    }
     on(eventKey, cb) {
         this.emitter.subscribe(eventKey, cb);
     }
 }
 
-// CONCATENATED MODULE: ./node_modules/@xaro/css-class-animations/src/index.ts
-;
+;// CONCATENATED MODULE: ./node_modules/@xaro/css-class-animations/src/index.ts
+
 /* harmony default export */ const css_class_animations_src = (CSSClassAnimations);
 
-// CONCATENATED MODULE: ./src/Tab.ts
-;
+;// CONCATENATED MODULE: ./src/Tab.ts
+
 
 class Tab {
     constructor(config) {
         this.pending = false;
         this.config = config;
         this.emitter = new src({ ...this.config.on });
-        if (this.config.tabs.config.mutation !== false) {
+        const tabsConfig = this.config.tabs.config;
+        if (tabsConfig.mutation !== false) {
             this.animation = new css_class_animations_src({
                 el: this.config.el,
-                allow: [this.config.tabs.config.mutation + 'end'],
+                allow: tabsConfig.mutation + 'end',
                 on: {
-                    end: [
-                        this.__mutationEndCallback.bind(this)
-                    ]
+                    end: this.__mutationEndCallback.bind(this)
                 }
             });
         }
     }
+    __mutationStartCallback(event) {
+        this.pending = true;
+        this.emitter.emit('__techMutationStart__', event);
+        this.emitter.emit('mutationStart', event);
+    }
     __mutationEndCallback(event) {
         this.pending = false;
-        this.emitter.emit('internalMutationEnd', event);
+        this.emitter.emit('__techMutationEnd__', event);
         this.config.tabs.currentPendingTab = undefined;
         this.emitter.emit('mutationEnd', event);
     }
     hide(config) {
         const classes = this.config.tabs.config.classes;
         const mutation = this.config.tabs.config.mutation;
-        this.pending = true;
-        this.config.tabs.currentPendingTab = config && config.animated !== false ? this : undefined;
         if (mutation === false) {
-            this.config.el.classList.remove(classes.activeTab);
+            this.config.el.removeClass(classes.activeTab);
+        }
+        else if (config && config.animated === false) {
+            this.config.el.removeClass(classes.activeTab);
+            this.config.visible = false;
         }
         else {
-            if (config && config.animated === false) {
-                this.config.tabs.currentPendingTab = undefined;
-                this.animation.addClass(classes[mutation].cancel);
-            }
-            this.animation.removeClass(classes[mutation].hide, classes[mutation].show);
+            const mtClsLeave = classes[mutation].leave;
+            this.config.tabs.currentPendingTab = this;
             if (config && config.after) {
-                this.emitter.once('internalMutationEnd', () => {
-                    this.animation.removeClass(classes.activeTab);
-                    this.config.visible = false;
-                });
                 this.emitter.once('mutationEnd', () => {
                     config.after();
                 });
-                this.animation.addClass(classes[mutation].hide);
+            }
+            this.emitter.once('__techMutationEnd__', () => {
+                this.config.el.removeClass(classes.activeTab, mtClsLeave.active, mtClsLeave.from, mtClsLeave.to);
+                this.config.visible = false;
+            });
+            this.config.el.addClass(mtClsLeave.from, mtClsLeave.active);
+            // this.config.el.nextTick( () => this.config.el.addClass(mtClsLeave.to) );
+            if (mutation === 'animation') {
+                this.config.el.addClass(mtClsLeave.to);
             }
             else {
-                this.animation.removeClass(classes.activeTab);
-            }
-            if (config && config.animated === false) {
-                this.animation.removeClass(classes[mutation].cancel);
+                this.config.el.nextTick(() => this.config.el.addClass(mtClsLeave.to));
             }
         }
     }
     show(config) {
         const classes = this.config.tabs.config.classes;
         const mutation = this.config.tabs.config.mutation;
-        this.pending = true;
-        this.config.tabs.currentPendingTab = this;
         if (mutation === false) {
-            this.config.el.classList.add(classes.activeTab);
+            this.config.el.addClass(classes.activeTab);
+        }
+        else if (config && config.animated === false) {
+            this.config.el.addClass(classes.activeTab);
+            this.config.visible = true;
         }
         else {
-            if (config && config.animated === false) {
-                this.animation.addClass(classes[mutation].cancel);
+            const mtClsEnter = classes[mutation].enter;
+            this.config.tabs.currentPendingTab = this;
+            if (config && config.after) {
+                this.emitter.once('mutationEnd', () => {
+                    config.after();
+                });
             }
-            this.animation.removeClass(classes[mutation].hide, classes[mutation].show);
-            if (config) {
-                if (config.after) {
-                    this.emitter.once('mutationEnd', () => {
-                        config.after();
-                    });
-                }
+            this.emitter.once('__techMutationEnd__', () => {
+                this.config.el.removeClass(mtClsEnter.active, mtClsEnter.from, mtClsEnter.to);
+            });
+            this.config.el.addClass(mtClsEnter.from, mtClsEnter.active, classes.activeTab);
+            if (mutation === 'animation') {
+                this.config.el.addClass(mtClsEnter.to);
             }
-            this.animation.addClass(classes.activeTab, classes[mutation].show);
+            else {
+                this.config.el.nextTick(() => this.config.el.addClass(mtClsEnter.to));
+            }
             this.config.visible = true;
-            if (config && config.animated === false) {
-                this.animation.removeClass(classes[mutation].show, classes[mutation].cancel);
-            }
         }
     }
 }
 
-// CONCATENATED MODULE: ./src/variables.ts
+;// CONCATENATED MODULE: ./src/variables.ts
 const defaults = {
     el: null,
     classes: {
@@ -414,45 +558,54 @@ const defaults = {
         activeTab: 'tabs__tab--active',
         activeNav: 'tabs__nav--active',
         animation: {
-            cancel: 'tabs__tab--animation-cancel',
-            hide: 'tabs__tab--animation-hide',
-            show: 'tabs__tab--animation-show',
+            leave: {
+                from: 'tabs__tab--animation-leave',
+                active: 'tabs__tab--animation-leave-active',
+                to: 'tabs__tab--animation-leave-to',
+            },
+            enter: {
+                from: 'tabs__tab--animation-enter',
+                active: 'tabs__tab--animation-enter-active',
+                to: 'tabs__tab--animation-enter-to',
+            },
         },
         transition: {
-            cancel: 'tabs__tab--transition-cancel',
-            hide: 'tabs__tab--transition-hide',
-            show: 'tabs__tab--transition-show',
+            leave: {
+                from: 'tabs__tab--transition-leave',
+                active: 'tabs__tab--transition-leave-active',
+                to: 'tabs__tab--transition-leave-to',
+            },
+            enter: {
+                from: 'tabs__tab--transition-enter',
+                active: 'tabs__tab--transition-enter-active',
+                to: 'tabs__tab--transition-enter-to',
+            },
         },
-        wrapper: {
-            animation: 'tabs--animation',
-            transition: 'tabs--transition',
-            false: 'tabs--without-animation'
-        }
     },
     current: undefined,
     mutation: undefined,
 };
 
-// CONCATENATED MODULE: ./src/Nav.ts
+;// CONCATENATED MODULE: ./src/Nav.ts
 class Nav {
     constructor(config) {
         this.config = config;
-        this.clickListener = this.clickListener.bind(this);
-        this.config.el.addEventListener('click', this.clickListener);
+        this.config.el.addEventListener('click', this.clickListener.bind(this));
     }
     clickListener(event) {
         this.config.tabs.changeTab(this.config.tab.config.idx);
     }
     disactivate() {
-        this.config.el.classList.remove(this.config.tabs.config.classes.activeNav);
+        this.config.el.removeClass(this.config.tabs.config.classes.activeNav);
     }
     activate() {
-        this.config.el.classList.add(this.config.tabs.config.classes.activeNav);
+        this.config.el.addClass(this.config.tabs.config.classes.activeNav);
     }
 }
 
-// CONCATENATED MODULE: ./src/Tabs.ts
-;
+;// CONCATENATED MODULE: ./src/Tabs.ts
+
+
 
 
 
@@ -464,9 +617,9 @@ class Tabs {
         this.config = extend({}, defaults, config);
         this.emitter = new src({ ...this.config.on });
         this.config.mutation = this.config.mutation === undefined ? 'animation' : this.config.mutation;
-        this.config.el.classList.add(this.config.classes.wrapper[new String(this.config.mutation).toString()]);
-        const navEls = this.config.el.querySelectorAll('.' + this.config.classes.nav);
-        const tabEls = this.config.el.querySelectorAll('.' + this.config.classes.tab);
+        this.config.el = config.el instanceof MicroDOM ? this.config.el : micro_dom_src(config.el);
+        const navEls = this.config.el.get('.' + this.config.classes.nav);
+        const tabEls = this.config.el.get('.' + this.config.classes.tab);
         for (let idx = 0; idx < tabEls.length; idx++) {
             if (this.config.current === undefined) {
                 if (tabEls[idx].classList.contains(this.config.classes.activeTab) || navEls[idx].classList.contains(this.config.classes.activeNav)) {
@@ -474,13 +627,13 @@ class Tabs {
                 }
             }
             const tab = new Tab({
-                el: tabEls[idx],
+                el: micro_dom_src(tabEls[idx]),
                 tabs: this,
                 idx
             });
             const nav = new Nav({
                 tabs: this,
-                el: navEls[idx],
+                el: micro_dom_src(navEls[idx]),
                 tab
             });
             tab.config.nav = nav;
@@ -496,11 +649,11 @@ class Tabs {
         for (const tab of this.items) {
             if (tab.config.idx === this.config.current) {
                 tab.show({ animated: false });
-                tab.config.nav?.config.el.classList.add(this.config.classes.activeNav);
+                tab.config.nav?.activate();
             }
             else {
                 tab.hide({ animated: false });
-                tab.config.nav?.config.el.classList.remove(this.config.classes.activeNav);
+                tab.config.nav?.disactivate();
             }
         }
     }
@@ -557,8 +710,8 @@ class Tabs {
     }
 }
 
-// CONCATENATED MODULE: ./src/index.ts
-;
+;// CONCATENATED MODULE: ./src/index.ts
+
 
 /* harmony default export */ const src_0 = (Tabs);
 
@@ -612,7 +765,7 @@ class Tabs {
 /******/ 	// module exports must be returned from runtime so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(471);
+/******/ 	return __webpack_require__(192);
 /******/ })()
 .default;
 });

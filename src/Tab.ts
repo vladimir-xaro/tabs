@@ -1,5 +1,5 @@
 import EventEmitter, { I_EventEmitter } from "@xaro/event-emitter";
-import { I_Tab, I_TabConfig, I_TabConstructorConfig, I_TabDisplayConfig } from "./types";
+import { I_Tab, I_TabConfig, I_TabConstructorConfig, I_TabDisplayConfig, I_Tabs } from "./types";
 import CSSClassAnimations, { I_CSSClassAnimations, T_DOMEventsKeys } from "@xaro/css-class-animations";
 
 export default class Tab implements I_Tab {
@@ -12,23 +12,30 @@ export default class Tab implements I_Tab {
     this.config   = config as I_TabConfig;
     this.emitter  = new EventEmitter({ ...this.config.on });
 
-    if (this.config.tabs.config.mutation !== false) {
-      this.animation  = new CSSClassAnimations({
-        el:     this.config.el,
-        allow:  [ this.config.tabs.config.mutation + 'end' as T_DOMEventsKeys ],
+    const tabsConfig = this.config.tabs.config;
+
+    if (tabsConfig.mutation !== false) {
+      this.animation = new CSSClassAnimations({
+        el: this.config.el,
+        allow: tabsConfig.mutation + 'end' as T_DOMEventsKeys,
         on: {
-          end: [
-            this.__mutationEndCallback.bind(this)
-          ]
+          end: this.__mutationEndCallback.bind(this)
         }
       });
     }
   }
 
+  protected __mutationStartCallback(event: AnimationEvent | TransitionEvent) {
+    this.pending = true;
+
+    this.emitter.emit('__techMutationStart__', event);
+
+    this.emitter.emit('mutationStart', event);
+  }
   protected __mutationEndCallback(event: AnimationEvent | TransitionEvent) {
     this.pending = false;
 
-    this.emitter.emit('internalMutationEnd', event);
+    this.emitter.emit('__techMutationEnd__', event);
     
     this.config.tabs.currentPendingTab = undefined;
     
@@ -39,36 +46,34 @@ export default class Tab implements I_Tab {
     const classes   = this.config.tabs.config.classes;
     const mutation  = this.config.tabs.config.mutation;
 
-    this.pending = true;
-
-    this.config.tabs.currentPendingTab = config && config.animated !== false ? this : undefined;
-
     if (mutation === false) {
-      this.config.el.classList.remove(classes.activeTab);
+      this.config.el.removeClass(classes.activeTab);
+    } else if (config && config.animated === false) {
+      this.config.el.removeClass(classes.activeTab);
+      this.config.visible = false;
     } else {
-      if (config && config.animated === false) {
-        this.config.tabs.currentPendingTab = undefined;
-        this.animation!.addClass(classes[mutation].cancel);
-      }
+      const mtClsLeave = classes[mutation].leave;
 
-      this.animation!.removeClass(classes[mutation].hide, classes[mutation].show);
-      
+      this.config.tabs.currentPendingTab = this;
+
       if (config && config.after) {
-        this.emitter.once('internalMutationEnd', () => {
-          this.animation!.removeClass(classes.activeTab);
-          this.config.visible = false;
-        });
-
         this.emitter.once('mutationEnd', () => {
           config.after!();
         });
-        this.animation!.addClass(classes[mutation].hide);
-      } else {
-        this.animation!.removeClass(classes.activeTab);
       }
 
-      if (config && config.animated === false) {
-        this.animation!.removeClass(classes[mutation].cancel);
+      this.emitter.once('__techMutationEnd__', () => {
+        this.config.el.removeClass(classes.activeTab, mtClsLeave.active, mtClsLeave.from, mtClsLeave.to);
+        this.config.visible = false;
+      });
+
+      this.config.el.addClass(mtClsLeave.from, mtClsLeave.active);
+
+      // this.config.el.nextTick( () => this.config.el.addClass(mtClsLeave.to) );
+      if (mutation === 'animation') {
+        this.config.el.addClass(mtClsLeave.to);
+      } else {
+        this.config.el.nextTick( () => this.config.el.addClass(mtClsLeave.to) );
       }
     }
   }
@@ -77,33 +82,35 @@ export default class Tab implements I_Tab {
     const classes   = this.config.tabs.config.classes;
     const mutation  = this.config.tabs.config.mutation;
 
-    this.pending = true;
-    this.config.tabs.currentPendingTab = this;
-
     if (mutation === false) {
-      this.config.el.classList.add(classes.activeTab);
+      this.config.el.addClass(classes.activeTab);
+    } else if (config && config.animated === false) {
+      this.config.el.addClass(classes.activeTab);
+      this.config.visible = true;
     } else {
-      if (config && config.animated === false) {
-        this.animation!.addClass(classes[mutation].cancel);
+      const mtClsEnter = classes[mutation].enter;
+
+      this.config.tabs.currentPendingTab = this;
+
+      if (config && config.after) {
+        this.emitter.once('mutationEnd', () => {
+          config.after!();
+        });
       }
 
-      this.animation!.removeClass(classes[mutation].hide, classes[mutation].show);
+      this.emitter.once('__techMutationEnd__', () => {
+        this.config.el.removeClass(mtClsEnter.active, mtClsEnter.from, mtClsEnter.to);
+      });
 
-      if (config) {
-        if (config.after) {
-          this.emitter.once('mutationEnd', () => {
-            config.after!();
-          });
-        }
+      this.config.el.addClass(mtClsEnter.from, mtClsEnter.active, classes.activeTab);
+
+      if (mutation === 'animation') {
+        this.config.el.addClass(mtClsEnter.to);
+      } else {
+        this.config.el.nextTick( () => this.config.el.addClass(mtClsEnter.to) );
       }
-
-      this.animation!.addClass(classes.activeTab, classes[mutation].show);
 
       this.config.visible = true;
-
-      if (config && config.animated === false) {
-        this.animation!.removeClass(classes[mutation].show, classes[mutation].cancel);
-      }
     }
   }
 }

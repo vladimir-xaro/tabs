@@ -2,6 +2,8 @@
 
 Tabs with events and css-class-animations for web
 
+> The package is mostly intended for use with TypeScript, but there are JS umd bundles in the "build" folder that can be used immediately after connecting
+
 ## Install
 
 ```sh
@@ -16,27 +18,38 @@ Therefore, for example, the afterChange event will be called only after the prev
 ## Usage
 *your.html*
 ```html
+<!-- head -->
+<link rel="stylesheet" href="./Tabs.css">
+<link rel="stylesheet" href="./themes/Default.theme.css">
+<!-- /head -->
+
+<!-- body -->
 <div class="tabs">
   <div class="tabs__navs">
-    <div class="tabs__nav">0</div>
+    <div class="tabs__nav tabs__nav--active">0</div>
     <div class="tabs__nav">1</div>
     <div class="tabs__nav">2</div>
   </div>
   <div class="tabs__tabs">
     <div class="tabs__tab tabs__tab--active">#0 Content</div>
-    <div class="tabs__tab tabs__tab--active">#1 Content</div>
-    <div class="tabs__tab tabs__tab--active">#2 Content</div>
+    <div class="tabs__tab">#1 Content</div>
+    <div class="tabs__tab">#2 Content</div>
   </div>
 </div>
+<!-- /body -->
 ```
 
 *your.ts*
 ```ts
+// import "@xaro/tabs/src/scss/index.scss";
+// import "@xaro/tabs/src/scss/themes/Default.theme.scss";
+import Tabs, { I_Tabs } from "@xaro/tabs";
+
 const tabs = new Tabs({
-  el: document.querySelector('.tabs') as Element,
+  el: document.querySelector('.tabs') as Element, // you must pass one element
   on: {
     init: (tabs: I_Tabs) => {
-      console.log('[init]');
+      console.log('[init]', tabs);
     },
     beforeChange: (tabs: I_Tabs, prevIdx: number, nextIdx: number) => {
       console.log('[beforeChange]', prevIdx, nextIdx);
@@ -48,11 +61,16 @@ const tabs = new Tabs({
 });
 ```
 
-***
+## Animations and Transitions
 
-> The library uses [@xaro/event-emitter](https://www.npmjs.com/package/@xaro/event-emitter) and you can use all its features through the **emitter** property of the Tabs object instance.
->
-> Also library uses [@xaro/css-class-animations](https://www.npmjs.com/package/@xaro/css-class-animations)
+The library uses an approach for changing tabs like Vue's [Transition Classes](https://vuejs.org/v2/guide/transitions.html#Transition-Classes). The classes for "animation" and "transitions" are named differently, you can change this by passing your values to the constructor during initialization.
+###### For the last "leave-to" and "enter-to" classes, the class is added to setTimeout for transition, for animation it is not.
+
+## Dependencies
+
+- [@xaro/event-emitter](https://www.npmjs.com/package/@xaro/event-emitter), all its features through the **emitter** property of the **Tabs** object instance.
+- [@xaro/css-class-animations](https://www.npmjs.com/package/@xaro/css-class-animations), all its features through the **animation** property of the **Tab** object instance, if you set mutation config property to *animation* or *transition*
+- [@xaro/micro-dom](https://www.npmjs.com/package/@xaro/micro-dom)
 
 ## Interfaces & Types
 
@@ -60,8 +78,11 @@ const tabs = new Tabs({
 ```ts
 import { I_EventEmitter } from "@xaro/event-emitter";
 import { I_CSSClassAnimations } from "@xaro/css-class-animations";
+import { I_MicroDOM } from "@xaro/micro-dom";
+
 
 /** Tabs */
+
 export interface I_Tabs {
   emitter:            I_EventEmitter;
   items:              I_Tab[];
@@ -72,7 +93,7 @@ export interface I_Tabs {
 }
 
 export interface I_TabsConstructorConfig {
-  el: Element;
+  el: string | Element | I_MicroDOM;
 
   classes?: {
     navs?:      string;
@@ -82,20 +103,29 @@ export interface I_TabsConstructorConfig {
     tab?:       string;
     activeTab?: string;
     animation?: {
-      cancel?:      string;
-      hide?:        string;
-      show?:        string;
-    },
+      leave?: {
+        from?:    string;
+        active?:  string;
+        to?:      string;
+      };
+      enter?: {
+        from?:    string;
+        active?:  string;
+        to?:      string;
+      };
+    };
     transition?: {
-      cancel?:      string;
-      hide?:        string;
-      show?:        string;
-    },
-    wrapper?: {
-      animation?:   string;
-      transition?:  string;
-      false?:       string;
-    }
+      leave?: {
+        from?:    string;
+        active?:  string;
+        to?:      string;
+      };
+      enter?: {
+        from?:    string;
+        active?:  string;
+        to?:      string;
+      };
+    };
   };
 
   attr?: {
@@ -113,7 +143,7 @@ export interface I_TabsConstructorConfig {
 }
 
 export interface I_TabsConfig {
-  el:       Element;
+  el:       I_MicroDOM;
 
   current:  number;
 
@@ -125,20 +155,29 @@ export interface I_TabsConfig {
     tab:        string;
     activeTab:  string;
     animation: {
-      cancel:     string;
-      hide:       string;
-      show:       string;
-    },
+      leave: {
+        from:     string;
+        active:   string;
+        to:       string;
+      };
+      enter: {
+        from:     string;
+        active:   string;
+        to:       string;
+      };
+    };
     transition: {
-      cancel:     string;
-      hide:       string;
-      show:       string;
-    },
-    wrapper: {
-      animation:  string;
-      transition: string;
-      false:      string;
-    }
+      leave: {
+        from:     string;
+        active:   string;
+        to:       string;
+      };
+      enter: {
+        from:     string;
+        active:   string;
+        to:       string;
+      };
+    };
   };
 
   attr: {
@@ -157,6 +196,7 @@ export interface I_TabsConfig {
 
 
 /** Tab */
+
 export interface I_Tab {
   emitter:    I_EventEmitter;
   config:     I_TabConfig;
@@ -170,7 +210,7 @@ export interface I_Tab {
 export interface I_TabConstructorConfig {
   tabs:     I_Tabs;
   idx:      number;
-  el:       Element;
+  el:       I_MicroDOM;
   nav?:     I_Nav;
   visible?: boolean;
 
@@ -184,7 +224,7 @@ export interface I_TabConstructorConfig {
 export interface I_TabConfig {
   tabs:     I_Tabs;
   idx:      number;
-  el:       Element;
+  el:       I_MicroDOM;
   nav?:     I_Nav;
   visible:  boolean;
 
@@ -202,6 +242,7 @@ export interface I_TabDisplayConfig {
 
 
 /** Nav */
+
 export interface I_Nav {
   config: I_NavConfig;
 
@@ -210,13 +251,13 @@ export interface I_Nav {
 }
 
 export interface I_NavConstructorConfig {
-  el:       Element;
+  el:       I_MicroDOM;
   tabs:     I_Tabs;
   tab:      I_Tab;
 }
 
 export interface I_NavConfig {
-  el:   Element;
+  el:   I_MicroDOM;
   tabs: I_Tabs;
   tab:  I_Tab;
 }

@@ -2,14 +2,18 @@
 
 # /build
 /dev
-# /examples
 /node_modules
-# /tests
 /webpack
 
 /src/scss/Dev.scss
 /src/scss/index.dev.scss
+
+/src/scss/Examples.scss
+/src/scss/index.examples.scss
+
+/src/index.css.ts
 /src/index.dev.ts
+/src/index.examples.ts
+
 package-lock.json
 tsconfig.json
-# tsconfig.json.default

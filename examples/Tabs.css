@@ -14,26 +14,7 @@
     opacity: 0;
   }
 }
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
-
-.container {
-  max-width: 100%;
-  width: 600px;
-}
-
-.tabs__navs {
-  display: flex;
-  margin-bottom: 15px;
-}
 .tabs__nav {
-  padding: 5px 10px;
-  margin-right: 5px;
-  border-radius: 4px;
-  background-color: #d2ff8e;
   user-select: none;
   cursor: pointer;
 }
@@ -41,13 +22,10 @@
   margin-right: 0;
 }
 .tabs__nav--active {
-  border: solid 1px black;
   cursor: default;
 }
 .tabs__tab {
   display: none;
-  padding: 5px;
-  border: solid 1px black;
 }
 .tabs__tab--active {
   display: block;
@@ -56,10 +34,10 @@
   animation: none !important;
 }
 .tabs__tab--animation-show {
-  animation: fadeIn 1300ms both;
+  animation: fadeIn 150ms both;
 }
 .tabs__tab--animation-hide {
-  animation: fadeOut 1300ms both;
+  animation: fadeOut 150ms both;
 }
 .tabs__tab--transition-cancel {
   transition-duration: 0s !important;
@@ -78,7 +56,7 @@
   opacity: 1;
 }
 .tabs--transition .tabs__tab {
-  transition-duration: 1300ms;
+  transition-duration: 150ms;
   opacity: 0;
 }
 
@@ -108,26 +86,7 @@
     opacity: 0;
   }
 }
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
-
-.container {
-  max-width: 100%;
-  width: 600px;
-}
-
-.tabs__navs {
-  display: flex;
-  margin-bottom: 15px;
-}
 .tabs__nav {
-  padding: 5px 10px;
-  margin-right: 5px;
-  border-radius: 4px;
-  background-color: #d2ff8e;
   user-select: none;
   cursor: pointer;
 }
@@ -135,13 +94,10 @@
   margin-right: 0;
 }
 .tabs__nav--active {
-  border: solid 1px black;
   cursor: default;
 }
 .tabs__tab {
   display: none;
-  padding: 5px;
-  border: solid 1px black;
 }
 .tabs__tab--active {
   display: block;
@@ -150,10 +106,10 @@
   animation: none !important;
 }
 .tabs__tab--animation-show {
-  animation: fadeIn 1300ms both;
+  animation: fadeIn 150ms both;
 }
 .tabs__tab--animation-hide {
-  animation: fadeOut 1300ms both;
+  animation: fadeOut 150ms both;
 }
 .tabs__tab--transition-cancel {
   transition-duration: 0s !important;
@@ -172,7 +128,7 @@
   opacity: 1;
 }
 .tabs--transition .tabs__tab {
-  transition-duration: 1300ms;
+  transition-duration: 150ms;
   opacity: 0;
 }
 
