@@ -1,4 +1,4 @@
-import { I_Nav, I_NavConfig, I_NavConstructorConfig, I_Tab, I_Tabs } from "./types";
+import { I_Nav, I_NavConfig, I_NavConstructorConfig } from "./types";
 
 export default class Nav implements I_Nav {
   config:   I_NavConfig;

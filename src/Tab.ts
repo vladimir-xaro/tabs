@@ -1,5 +1,5 @@
 import EventEmitter, { I_EventEmitter } from "@xaro/event-emitter";
-import { I_Tab, I_TabConfig, I_TabConstructorConfig, I_TabDisplayConfig, I_Tabs } from "./types";
+import { I_Tab, I_TabConfig, I_TabConstructorConfig, I_TabDisplayConfig } from "./types";
 import CSSClassAnimations, { I_CSSClassAnimations, T_DOMEventsKeys } from "@xaro/css-class-animations";
 
 export default class Tab implements I_Tab {
