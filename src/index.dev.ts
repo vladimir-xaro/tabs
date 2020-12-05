@@ -1,25 +1,6 @@
 import './scss/index.dev.scss';
 import Tabs from "./";
-import { I_Tabs } from "./types";
 import _ from '@xaro/micro-dom';
-
-// const tabs = new Tabs({
-//   el:       '.tabs-0',
-//   mutation: 'transition',
-//   // mutation: 'animation',
-//   // mutation: false,
-//   // on: {
-//   //   init: (tabs: I_Tabs) => {
-//   //     console.log('[init]');
-//   //   },
-//   //   beforeChange: (tabs: I_Tabs, prevIdx: number, nextIdx: number) => {
-//   //     console.log('[beforeChange]', prevIdx, nextIdx);
-//   //   },
-//   //   afterChange: (tabs: I_Tabs, prevIdx: number, nextIdx: number) => {
-//   //     console.log('[afterChange]', prevIdx, nextIdx);
-//   //   }
-//   // }
-// });
 
 const tabs = _('.tabs').map(el => new Tabs({
   el,

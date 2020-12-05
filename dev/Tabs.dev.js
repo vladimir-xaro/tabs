@@ -3,14 +3,9 @@
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./node_modules/@xaro/extend/index.js":
-/*!********************************************!*\
+/*!********************************************!*
   !*** ./node_modules/@xaro/extend/index.js ***!
   \********************************************/
-/*! namespace exports */
-/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! export isObject [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -50,12 +45,9 @@ function isObject(o) {
 /***/ }),
 
 /***/ "./src/scss/index.dev.scss":
-/*!*********************************!*\
+/*!*********************************!*
   !*** ./src/scss/index.dev.scss ***!
   \*********************************/
-/*! namespace exports */
-/*! exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -65,12 +57,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ "./src/scss/index.scss":
-/*!*****************************!*\
+/*!*****************************!*
   !*** ./src/scss/index.scss ***!
   \*****************************/
-/*! namespace exports */
-/*! exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -80,13 +69,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ "./node_modules/@xaro/css-class-animations/src/CSSClassAnimations.ts":
-/*!***************************************************************************!*\
+/*!***************************************************************************!*
   !*** ./node_modules/@xaro/css-class-animations/src/CSSClassAnimations.ts ***!
   \***************************************************************************/
-/*! namespace exports */
-/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -166,13 +151,9 @@ class CSSClassAnimations {
 /***/ }),
 
 /***/ "./node_modules/@xaro/css-class-animations/src/index.ts":
-/*!**************************************************************!*\
+/*!**************************************************************!*
   !*** ./node_modules/@xaro/css-class-animations/src/index.ts ***!
   \**************************************************************/
-/*! namespace exports */
-/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_exports__, __webpack_require__.r, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -187,14 +168,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ "./node_modules/@xaro/css-class-animations/src/variables.ts":
-/*!******************************************************************!*\
+/*!******************************************************************!*
   !*** ./node_modules/@xaro/css-class-animations/src/variables.ts ***!
   \******************************************************************/
-/*! namespace exports */
-/*! export events [provided] [no usage info] [missing usage info prevents renaming] */
-/*! export eventsListeners [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -218,13 +194,9 @@ const events = Object.keys(eventsListeners);
 /***/ }),
 
 /***/ "./node_modules/@xaro/event-emitter/src/EventEmitter.ts":
-/*!**************************************************************!*\
+/*!**************************************************************!*
   !*** ./node_modules/@xaro/event-emitter/src/EventEmitter.ts ***!
   \**************************************************************/
-/*! namespace exports */
-/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -377,13 +349,9 @@ class EventEmitter {
 /***/ }),
 
 /***/ "./node_modules/@xaro/event-emitter/src/index.ts":
-/*!*******************************************************!*\
+/*!*******************************************************!*
   !*** ./node_modules/@xaro/event-emitter/src/index.ts ***!
   \*******************************************************/
-/*! namespace exports */
-/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_exports__, __webpack_require__.r, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -398,13 +366,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ "./node_modules/@xaro/micro-dom/src/MicroDOM.ts":
-/*!******************************************************!*\
+/*!******************************************************!*
   !*** ./node_modules/@xaro/micro-dom/src/MicroDOM.ts ***!
   \******************************************************/
-/*! namespace exports */
-/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -418,7 +382,7 @@ class MicroDOM extends Array {
         super(...args);
     }
     get(...args) {
-        let newInstance = new MicroDOM;
+        let newInstance = new MicroDOM();
         if (this.length) {
             for (const el of this) {
                 newInstance.push(...(0,_helpers__WEBPACK_IMPORTED_MODULE_0__.getEls)(el, ...args));
@@ -430,7 +394,7 @@ class MicroDOM extends Array {
         return newInstance;
     }
     create(...entities) {
-        let newInstance = new MicroDOM;
+        let newInstance = new MicroDOM();
         for (const entity of entities) {
             if (typeof entity === 'string') {
                 newInstance.push(document.createElement(entity));
@@ -453,6 +417,12 @@ class MicroDOM extends Array {
     empty() {
         for (const el of this) {
             el.innerHTML = '';
+        }
+        return this;
+    }
+    text(text) {
+        for (const el of this) {
+            el.textContent = text || '';
         }
         return this;
     }
@@ -544,13 +514,9 @@ class MicroDOM extends Array {
 /***/ }),
 
 /***/ "./node_modules/@xaro/micro-dom/src/entry.ts":
-/*!***************************************************!*\
+/*!***************************************************!*
   !*** ./node_modules/@xaro/micro-dom/src/entry.ts ***!
   \***************************************************/
-/*! namespace exports */
-/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -572,14 +538,9 @@ function _(...args) {
 /***/ }),
 
 /***/ "./node_modules/@xaro/micro-dom/src/helpers.ts":
-/*!*****************************************************!*\
+/*!*****************************************************!*
   !*** ./node_modules/@xaro/micro-dom/src/helpers.ts ***!
   \*****************************************************/
-/*! namespace exports */
-/*! export getEls [provided] [no usage info] [missing usage info prevents renaming] */
-/*! export recursiveAppend [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -615,14 +576,9 @@ function recursiveAppend(el, ...content) {
 /***/ }),
 
 /***/ "./node_modules/@xaro/micro-dom/src/index.ts":
-/*!***************************************************!*\
+/*!***************************************************!*
   !*** ./node_modules/@xaro/micro-dom/src/index.ts ***!
   \***************************************************/
-/*! namespace exports */
-/*! export MicroDOM [provided] [no usage info] [missing usage info prevents renaming] -> ./node_modules/@xaro/micro-dom/src/MicroDOM.ts .default */
-/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_exports__, __webpack_require__.d, __webpack_require__.r, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -642,13 +598,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ "./src/Nav.ts":
-/*!********************!*\
+/*!********************!*
   !*** ./src/Nav.ts ***!
   \********************/
-/*! namespace exports */
-/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -675,13 +627,9 @@ class Nav {
 /***/ }),
 
 /***/ "./src/Tab.ts":
-/*!********************!*\
+/*!********************!*
   !*** ./src/Tab.ts ***!
   \********************/
-/*! namespace exports */
-/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -788,13 +736,9 @@ class Tab {
 /***/ }),
 
 /***/ "./src/Tabs.ts":
-/*!*********************!*\
+/*!*********************!*
   !*** ./src/Tabs.ts ***!
   \*********************/
-/*! namespace exports */
-/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -917,12 +861,9 @@ class Tabs {
 /***/ }),
 
 /***/ "./src/index.dev.ts":
-/*!**************************!*\
+/*!**************************!*
   !*** ./src/index.dev.ts ***!
   \**************************/
-/*! namespace exports */
-/*! exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -990,13 +931,9 @@ window.tabs = tabs[0];
 /***/ }),
 
 /***/ "./src/index.ts":
-/*!**********************!*\
+/*!**********************!*
   !*** ./src/index.ts ***!
   \**********************/
-/*! namespace exports */
-/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_exports__, __webpack_require__.r, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -1013,13 +950,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ "./src/variables.ts":
-/*!**************************!*\
+/*!**************************!*
   !*** ./src/variables.ts ***!
   \**************************/
-/*! namespace exports */
-/*! export defaults [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);

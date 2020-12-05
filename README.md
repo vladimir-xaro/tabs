@@ -1,3 +1,5 @@
+[![DeepScan grade](https://deepscan.io/api/teams/11657/projects/14879/branches/287087/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=11657&pid=14879&bid=287087)
+
 # @xaro/tabs
 
 Tabs with events and css-class-animations for web

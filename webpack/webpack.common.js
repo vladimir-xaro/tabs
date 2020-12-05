@@ -1,5 +1,4 @@
 const __PATH = require('./paths');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: {
@@ -27,24 +26,6 @@ module.exports = {
           allowTsInNodeModules: true
         }
       },
-
-      // {
-      //   test: /\.(scss|css)$/,
-      //   use: [
-
-      //     {
-      //       loader: MiniCssExtractPlugin.loader
-      //     }, {
-      //       loader: 'css-loader',
-      //       options: {
-      //         importLoaders: 1
-      //       }
-      //     }, {
-      //       loader: 'sass-loader'
-      //     }
-
-      //   ]
-      // }
 
     ],
   },
