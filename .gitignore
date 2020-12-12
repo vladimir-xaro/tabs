@@ -1,6 +1,5 @@
 .DS_Store
 
-# /build
 /dev
 /examples
 /node_modules
@@ -15,6 +14,7 @@
 /src/index.css.ts
 /src/index.dev.ts
 /src/index.examples.ts
+/src/index.themes.ts
 
 package-lock.json
 tsconfig.json

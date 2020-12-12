@@ -12,7 +12,8 @@
     "build:examples": "cross-env NODE_ENV=development webpack --config webpack/webpack.examples.js",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "build:prod:min": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.min.js",
-    "build:all": "npm run build && npm run build:prod && npm run build:prod:min"
+    "build:all": "npm run build && npm run build:prod && npm run build:prod:min",
+    "release": "dotenv release-it --"
   },
   "repository": {
     "type": "git",
@@ -58,5 +59,10 @@
     "@xaro/css-class-animations": "0.1.4",
     "@xaro/event-emitter": "^1.4.5",
     "@xaro/micro-dom": "^0.1.11"
+  },
+  "release-it": {
+    "github": {
+      "release": true
+    }
   }
 }
