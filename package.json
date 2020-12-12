@@ -12,7 +12,7 @@
     "build:examples": "cross-env NODE_ENV=development webpack --config webpack/webpack.examples.js",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "build:prod:min": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.min.js",
-    "build:all": "npm run build && npm run build:prod && npm run build:prod:min",
+    "build:all": "npm run build && npm run build:prod && npm run build:prod:min && npm run build:themes",
     "release": "dotenv release-it --"
   },
   "repository": {
