@@ -16,5 +16,6 @@
 /src/index.examples.ts
 /src/index.themes.ts
 
+.env
 package-lock.json
 tsconfig.json
